@@ -1,0 +1,16 @@
+{
+  "extends": "@sdk/typescript-config/base.json",
+  "compilerOptions": {
+    "sourceMap": true,
+    "lib": ["DOM"],
+    "rootDir": "src",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+}
