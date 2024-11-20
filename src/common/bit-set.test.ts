@@ -379,4 +379,45 @@ describe('BitSet', () => {
       expect(bitSet.size).toEqual(6);
     });
   });
+
+  describe('padLeft', () => {
+    it('pads empty BitSet correctly', () => {
+      const bitSet = new BitSet();
+      bitSet.padLeft(5);
+      expect(bitSet.toString()).toEqual('00000');
+      expect(bitSet.size).toEqual(5);
+    });
+
+    it('pads BitSet with custom fill string', () => {
+      const bitSet = new BitSet();
+      bitSet.set(0);
+      bitSet.padLeft(5, '1');
+      expect(bitSet.toString()).toEqual('11111');
+      expect(bitSet.size).toEqual(5);
+    });
+
+    it('pads non-empty BitSet correctly', () => {
+      const bitSet = new BitSet(2);
+      bitSet.set(0, true);
+      bitSet.padLeft(5);
+      expect(bitSet.toString()).toEqual('00010');
+      expect(bitSet.size).toEqual(5);
+    });
+
+    it('does nothing when maxLength is less than current size', () => {
+      const bitSet = new BitSet();
+      bitSet.fromBinaryString('1010');
+      bitSet.padLeft(2);
+      expect(bitSet.toString()).toEqual('1010');
+      expect(bitSet.size).toEqual(4);
+    });
+
+    it('pads correctly when maxLength equals current size', () => {
+      const bitSet = new BitSet();
+      bitSet.fromBinaryString('1010');
+      bitSet.padLeft(4);
+      expect(bitSet.toString()).toEqual('1010');
+      expect(bitSet.size).toEqual(4);
+    });
+  });
 });

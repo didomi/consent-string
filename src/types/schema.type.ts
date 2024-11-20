@@ -1,3 +1,4 @@
+import { EncodingAlgorithm } from '@/constants/encoding-algorithm';
 import type { FieldType } from '@/fields/encoder';
 
 /**
@@ -7,7 +8,7 @@ export interface SchemaField {
   key: string;
   type: FieldType;
   optional?: boolean;
-  variants?: FieldType[];
+  variants?: EncodingAlgorithm[];
 }
 
 /**

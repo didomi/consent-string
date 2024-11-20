@@ -1,19 +1,18 @@
 {
   "consent_string_type": "didomi_consent_string",
-  "specification_version": 2,
+  "specification_version": 1,
   "tests": [
     {
-      "description": "Didomi Consent String V2",
-      "encoded": "CGHWv4UYba5-dZnABdKu__D6iWHsD6iWHsAAKn2J57YEACKUqIAEUpVAAAIixwAACIsY",
+      "description": "Didomi Consent String V1",
+      "encoded": "BGHWv4UYba5-dZnABdKu__D6iWHsD6iWHsJ9iee2BAAilKiABFKVQAACIscAAAiLGAAA",
       "decoded": {
         "consent_string_type": "didomi_consent_string",
-        "specification_version": 2,
+        "specification_version": 1,
         "user_id": "1875afe1-461b-6b9f-9d66-700174abbffc",
         "created": "2023-04-12T18:10:00.000Z",
         "updated": "2023-04-12T18:10:00.000Z",
-        "regulation_id": 10,
         "sync": "2023-05-24T18:10:00.000Z",
-        "vendors": {
+        "vendors_optin": {
           "enabled": [
             128,
             129,
@@ -23,7 +22,7 @@
           ],
           "disabled": []
         },
-        "purposes": {
+        "purposes_optin": {
           "enabled": [
             1,
             2,
@@ -36,7 +35,7 @@
             4
           ]
         },
-        "vendors_li": {
+        "vendors_optout": {
           "enabled": [
             128,
             129,
@@ -46,7 +45,7 @@
           ],
           "disabled": []
         },
-        "purposes_li": {
+        "purposes_optout": {
           "enabled": [
             1,
             2,
@@ -63,12 +62,18 @@
     }
   ],
   "types": [
+    "version",
     "uuid",
     "date",
-    "u16",
     "enabled_disabled_ids"
   ],
   "fields": [
+    {
+      "type": "version",
+      "description": "Didomi Consent String Specification Version, 6 bits number - 000001 or 'B' in Base64 for v1",
+      "key": "version",
+      "value": 1
+    },
     {
       "type": "uuid",
       "description": "User ID (UUID)",
@@ -85,11 +90,6 @@
       "key": "updated"
     },
     {
-      "type": "u16",
-      "description": "Regulation ID that was used to encode user status",
-      "key": "regulation_id"
-    },
-    {
       "type": "date",
       "description": "Last sync date",
       "key": "sync",
@@ -98,7 +98,7 @@
     {
       "type": "enabled_disabled_ids",
       "description": "User Status for purposes opt-in",
-      "key": "purposes",
+      "key": "purposes_optin",
       "variants": [
         "bit_field_2_bits",
         "ranges_u16",
@@ -108,7 +108,7 @@
     {
       "type": "enabled_disabled_ids",
       "description": "User Status for purposes opt-out",
-      "key": "purposes_li",
+      "key": "purposes_optout",
       "variants": [
         "bit_field_2_bits",
         "ranges_u16",
@@ -118,7 +118,7 @@
     {
       "type": "enabled_disabled_ids",
       "description": "User Status for vendors opt-in",
-      "key": "vendors",
+      "key": "vendors_optin",
       "variants": [
         "bit_field_2_bits",
         "ranges_u16",
@@ -128,7 +128,7 @@
     {
       "type": "enabled_disabled_ids",
       "description": "User Status for vendors opt-out",
-      "key": "vendors_li",
+      "key": "vendors_optout",
       "variants": [
         "bit_field_2_bits",
         "ranges_u16",

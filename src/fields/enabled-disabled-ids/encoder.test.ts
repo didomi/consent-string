@@ -4,16 +4,20 @@ import { encodeEnabledDisabledIDs } from './encoder';
 import { SchemaField } from '@/types/schema.type';
 import { PurposesVendors } from '@/types/purposes-vendors.type';
 import { encodeBitField2Bits } from '@/fields/enabled-disabled-ids/bit-field-2-bits/encoder';
+import { EncodingAlgorithm } from '@/constants/encoding-algorithm';
+import { FieldType } from '@/fields/encoder';
 
 describe('encodeEnabledDisabledIDs', () => {
   const mockField: SchemaField = {
     key: 'test_field',
-    variants: ['bit_field_2_bits']
+    type: FieldType.ENABLED_DISABLED_IDS,
+    variants: [EncodingAlgorithm.BIT_FIELD_2_BITS]
   };
 
   it('throws error when field has no variants', () => {
     const invalidField: SchemaField = {
       key: 'test_field',
+      type: FieldType.ENABLED_DISABLED_IDS,
       variants: []
     };
 
@@ -25,7 +29,8 @@ describe('encodeEnabledDisabledIDs', () => {
   it('throws error for unsupported field variant', () => {
     const invalidField: SchemaField = {
       key: 'test_field',
-      variants: ['UnsupportedType']
+      type: FieldType.ENABLED_DISABLED_IDS,
+      variants: ['UnsupportedType' as any]
     };
 
     expect(() =>
@@ -60,7 +65,8 @@ describe('encodeEnabledDisabledIDs', () => {
   it('selects smallest possible encoded value when multiple variants are available', () => {
     const fieldWithMultipleVariants: SchemaField = {
       key: 'test_field',
-      variants: ['bit_field_2_bits']
+      type: FieldType.ENABLED_DISABLED_IDS,
+      variants: [EncodingAlgorithm.BIT_FIELD_2_BITS, EncodingAlgorithm.RANGES_U16, EncodingAlgorithm.RANGES_FIBONACCI]
     };
 
     const purposesVendors: PurposesVendors = {

@@ -7,4 +7,9 @@ describe('encodeUUID', () => {
       '00011000011101011010111111100001010001100001101101101011100111111001110101100110011100000000000101110100101010111011111111111100'
     );
   });
+
+  it('throws error for invalid UUID length', () => {
+    const invalidUuid = '1875afe1-461b-6b9f-9d66';
+    expect(() => encodeUUID(invalidUuid)).toThrow('Invalid UUID length');
+  });
 });

@@ -121,6 +121,18 @@ export class BitSet {
   }
 
   /**
+   * Pad the BitSet with `fillString` to the left to the `maxLength`
+   *
+   * @param maxLength
+   * @param fillString
+   * @returns `this`
+   */
+  public padLeft(maxLength: number, fillString: string = '0'): BitSet {
+    this.bitString = this.bitString.padStart(maxLength, fillString);
+    return this;
+  }
+
+  /**
    * Delete bits from the end of the string
    * @param numberOfBits number of bits to trim form the end of the BitSet
    * @returns

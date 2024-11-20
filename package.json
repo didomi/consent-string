@@ -22,7 +22,9 @@
       "require": "./dist/cjs/*/*.js"
     }
   },
-  "dependencies": {},
+  "dependencies": {
+    "@iabtechlabtcf/core": "1.5.13"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "26.0.1",
     "@rollup/plugin-json": "6.1.0",

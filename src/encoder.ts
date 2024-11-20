@@ -1,45 +1,62 @@
 import { BitSet } from '@/common/bit-set';
-import { ConsentStringType } from '@/types/consent-string.type';
-import { UserStatus } from '@/types/user-status.type';
-import { encodeField } from '@/fields/encoder';
-import { schemas } from '@/schemas';
+import { EncodingAlgorithm } from '@/constants/encoding-algorithm';
+import { encodeField, FieldValue } from '@/fields/encoder';
+import { Schema } from '@/types/schema.type';
+
+/**
+ * Overrides applied to a schema
+ * This can be used to override various parts of a pre-defined schema
+ */
+export type SchemaOverrides = {
+  fields?: {
+    [key: string]: {
+      variants?: EncodingAlgorithm[];
+    };
+  };
+}
 
 /**
  * Options for encoding a consent string
  */
 export interface EncodingOptions {
   /**
-   * The type of consent string to encode
+   * Schema to use for encoding
    */
-  type: ConsentStringType;
+  schema: Schema;
 
   /**
    * The user status
    */
-  userStatus: UserStatus;
+  userStatus: Record<string, FieldValue>;
+
+  /**
+   * Overrides applied to the schema
+   * This can be used to override various parts of the pre-defined schema
+   */
+  schemaOverrides?: SchemaOverrides;
 }
 
 /**
  * Encode a consent string
  */
 export function encode({
-  type,
+  schema,
   userStatus,
+  schemaOverrides,
 }: EncodingOptions): string {
-  if (!type || !userStatus) {
+  if (!schema || !userStatus) {
     throw new Error('Missing required options');
-  }
-
-  const schema = schemas[type];
-
-  if (!schema) {
-    throw new Error(`Unsupported consent string type: ${type}`);
   }
 
   const bitSet = new BitSet();
 
   for (const field of schema.fields) {
-    const fieldValue = userStatus[field.key as keyof UserStatus];
+    const fieldValue = userStatus[field.key];
+
+    // Apply schema overrides if defined so that the encoder can use the final definition
+    if (schemaOverrides?.fields?.[field.key]?.variants) {
+      field.variants = schemaOverrides.fields[field.key].variants;
+    }
 
     bitSet.add(encodeField(field, fieldValue));
   }

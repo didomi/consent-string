@@ -2,6 +2,7 @@ import { BitSet } from '@/common/bit-set';
 import { IdsStatuses } from '@/common/ids-statuses';
 import { getEncodedStatusBinaryString } from '@/common/encoded-status';
 import { encodeU1, encodeU16 } from '@/fields/number/encoder';
+import { ENABLED_DISABLED_IDS_ENCODING_ALGORITHMS } from '@/constants/encoding-algorithm';
 
 /**
  * Encode `IdsStatuses` to a `BitSet` using ranges of 16-bit unsigned integers
@@ -25,7 +26,7 @@ export const encodeRangesU16 = (ids: IdsStatuses): BitSet => {
   const rangesByStatus = ids.getRanges();
 
   // Set `EncodingAlgorithm`
-  bitSet.addBinaryString('01');
+  bitSet.addBinaryString(ENABLED_DISABLED_IDS_ENCODING_ALGORITHMS.ranges_u16);
 
   // Set `EncodedStatuses`
   bitSet.addBinaryString(getEncodedStatusBinaryString(rangesByStatus));

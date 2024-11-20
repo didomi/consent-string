@@ -1,9 +1,17 @@
 import { BitSet } from '@/common/bit-set';
 import { encodeDate } from '@/fields/date/encoder';
 import { encodeEnabledDisabledIDs } from '@/fields/enabled-disabled-ids/encoder';
-import { encodeU16 } from '@/fields/number/encoder';
+import { encodeU16, encodeU6 } from '@/fields/number/encoder';
 import { encodeUUID } from '@/fields/uuid/encoder';
+import { encodeVersion } from '@/fields/version/encoder';
+import { PurposesVendors } from '@/types/purposes-vendors.type';
 import { SchemaField } from '@/types/schema.type';
+import { UUID } from '@/types/uuid.type';
+
+/**
+ * Possible field values
+ */
+export type FieldValue = UUID | number | Date | PurposesVendors | null;
 
 /**
  * Field encoder
@@ -11,19 +19,28 @@ import { SchemaField } from '@/types/schema.type';
 export type Encoder<T> = (value: T, field: SchemaField) => BitSet;
 
 /**
- * Field type to encoder map
+ * Field types
  */
-export const FIELD_TYPE_TO_ENCODER_MAP: Record<string, any> = {
-  'u16': encodeU16,
-  'uuid': encodeUUID,
-  'date': encodeDate,
-  'enabled_disabled_ids': encodeEnabledDisabledIDs
-};
+export enum FieldType {
+  VERSION = 'version',
+  U6 = 'u6',
+  U16 = 'u16',
+  UUID = 'uuid',
+  DATE = 'date',
+  ENABLED_DISABLED_IDS = 'enabled_disabled_ids'
+}
 
 /**
- * Field Type
+ * Field type to encoder map
  */
-export type FieldType = keyof typeof FIELD_TYPE_TO_ENCODER_MAP;
+export const FIELD_TYPE_TO_ENCODER_MAP: Record<FieldType, Encoder<any>> = {
+  [FieldType.VERSION]: encodeVersion,
+  [FieldType.U6]: encodeU6,
+  [FieldType.U16]: encodeU16,
+  [FieldType.UUID]: encodeUUID,
+  [FieldType.DATE]: encodeDate,
+  [FieldType.ENABLED_DISABLED_IDS]: encodeEnabledDisabledIDs
+};
 
 /**
  * Get a field encoder for a given type

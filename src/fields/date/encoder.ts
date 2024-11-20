@@ -8,5 +8,5 @@ import { BitSet } from '@/common/bit-set';
  */
 export function encodeDate(field: Date): BitSet {
   const time = Math.round(field.getTime() / 100);
-  return new BitSet().fromBinaryString(time.toString(2));
+  return new BitSet().fromBinaryString(time.toString(2).padStart(36, '0'));
 }

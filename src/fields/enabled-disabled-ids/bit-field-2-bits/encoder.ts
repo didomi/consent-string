@@ -1,5 +1,6 @@
 import { BitSet } from '@/common/bit-set';
 import { IdsStatuses, STATUS_TO_BIT_SET } from '@/common/ids-statuses';
+import { ENABLED_DISABLED_IDS_ENCODING_ALGORITHMS } from '@/constants/encoding-algorithm';
 import { encodeU16 } from '@/fields/number/encoder';
 
 /**
@@ -20,7 +21,7 @@ export function encodeBitField2Bits(ids: IdsStatuses): BitSet {
   }
 
   // Set `EncodingAlgorithm`
-  bitSet.addBinaryString('00');
+  bitSet.addBinaryString(ENABLED_DISABLED_IDS_ENCODING_ALGORITHMS.bit_field_2_bits);
 
   let numberOfIDs;
   let startID;

@@ -27,6 +27,16 @@ export function encodeU1(value: boolean): BitSet {
 }
 
 /**
+ * Encode a number to a 6-bit BitSet
+ *
+ * @param value number to encode
+ * @returns encoded number
+ */
+export function encodeU6(value: number): BitSet {
+  return encodeNumber(value, 6, 63);
+}
+
+/**
  * Encode a number to a 16-bit BitSet
  *
  * @param value number to encode

@@ -1,0 +1,149 @@
+{
+  "consent_string_type": "didomi_consent_string",
+  "specification_version": 2,
+  "tests": [
+    {
+      "description": "Didomi Consent String V2",
+      "encoded": "CGHWv4UYba5-dZnABdKu__D6iWHsD6iWHsAAKn2J57YEACKUqIAEUpVAAAIixwAACIsY",
+      "decoded": {
+        "consent_string_type": "didomi_consent_string",
+        "specification_version": 2,
+        "user_id": "1875afe1-461b-6b9f-9d66-700174abbffc",
+        "created": "2023-04-12T18:10:00.000Z",
+        "updated": "2023-04-12T18:10:00.000Z",
+        "regulation_id": 10,
+        "sync": "2023-05-24T18:10:00.000Z",
+        "vendors_optin": {
+          "enabled": [
+            128,
+            129,
+            130,
+            131,
+            132
+          ],
+          "disabled": []
+        },
+        "purposes_optin": {
+          "enabled": [
+            1,
+            2,
+            6,
+            7,
+            8
+          ],
+          "disabled": [
+            3,
+            4
+          ]
+        },
+        "vendors_optout": {
+          "enabled": [
+            128,
+            129,
+            130,
+            131,
+            132
+          ],
+          "disabled": []
+        },
+        "purposes_optout": {
+          "enabled": [
+            1,
+            2,
+            6,
+            7,
+            8
+          ],
+          "disabled": [
+            3,
+            4
+          ]
+        }
+      }
+    }
+  ],
+  "types": [
+    "version",
+    "uuid",
+    "date",
+    "u16",
+    "enabled_disabled_ids",
+    "bit_field_2_bits",
+    "ranges_u16",
+    "ranges_fibonacci"
+  ],
+  "fields": [
+    {
+      "type": "version",
+      "description": "Didomi Consent String Specification Version, 6 bits number - 000010 or 'C' in Base64 for v2",
+      "key": "version",
+      "value": 2
+    },
+    {
+      "type": "uuid",
+      "description": "User ID (UUID)",
+      "key": "user_id"
+    },
+    {
+      "type": "date",
+      "description": "UTC epoch time format when the Consent String was initially created",
+      "key": "created"
+    },
+    {
+      "type": "date",
+      "description": "UTC epoch time format when the Consent String was last time updated",
+      "key": "updated"
+    },
+    {
+      "type": "u16",
+      "description": "Regulation ID that was used to encode user status",
+      "key": "regulation_id"
+    },
+    {
+      "type": "date",
+      "description": "Last sync date",
+      "key": "sync",
+      "optional": true
+    },
+    {
+      "type": "enabled_disabled_ids",
+      "description": "User Status for purposes opt-in",
+      "key": "purposes_optin",
+      "variants": [
+        "bit_field_2_bits",
+        "ranges_u16",
+        "ranges_fibonacci"
+      ]
+    },
+    {
+      "type": "enabled_disabled_ids",
+      "description": "User Status for purposes opt-out",
+      "key": "purposes_optout",
+      "variants": [
+        "bit_field_2_bits",
+        "ranges_u16",
+        "ranges_fibonacci"
+      ]
+    },
+    {
+      "type": "enabled_disabled_ids",
+      "description": "User Status for vendors opt-in",
+      "key": "vendors_optin",
+      "variants": [
+        "bit_field_2_bits",
+        "ranges_u16",
+        "ranges_fibonacci"
+      ]
+    },
+    {
+      "type": "enabled_disabled_ids",
+      "description": "User Status for vendors opt-out",
+      "key": "vendors_optout",
+      "variants": [
+        "bit_field_2_bits",
+        "ranges_u16",
+        "ranges_fibonacci"
+      ]
+    }
+  ]
+}

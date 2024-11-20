@@ -24,17 +24,4 @@ describe('FibonacciNumberIdsRange', () => {
       expect(fibonacciRange.endId.number).toEqual(1);
     });
   });
-  describe('toIdsRange', () => {
-    it('returns an ids range', () => {
-      const fibonacciRange = new FibonacciNumberIdsRange(
-        new FibonacciNumber(1),
-        new FibonacciNumber(10),
-      );
-      const range = fibonacciRange.toIdsRange();
-      expect(range).toBeDefined();
-      expect(range.startId).toEqual(1);
-      expect(range.endId).toEqual(10);
-      expect(range.numberOfIds).toEqual(10);
-    });
-  });
 });

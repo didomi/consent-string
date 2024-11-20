@@ -1,4 +1,4 @@
-import { encodeNumber, encodeU1, encodeU16 } from './encoder';
+import { encodeNumber, encodeU1, encodeU16, encodeU6 } from './encoder';
 
 describe('Number encoders', () => {
   describe('encodeNumber', () => {
@@ -18,6 +18,18 @@ describe('Number encoders', () => {
     it('should encode boolean values correctly', () => {
       expect(encodeU1(true).toString()).toEqual('1');
       expect(encodeU1(false).toString()).toEqual('0');
+    });
+  });
+
+  describe('encodeU6', () => {
+    it('should encode 6-bit numbers correctly', () => {
+      expect(encodeU6(0).toString()).toEqual('000000');
+      expect(encodeU6(63).toString()).toEqual('111111');
+    });
+
+    it('should throw error for invalid values', () => {
+      expect(() => encodeU6(-1)).toThrow('Value must be between 0 and 63');
+      expect(() => encodeU6(64)).toThrow('Value must be between 0 and 63');
     });
   });
 
