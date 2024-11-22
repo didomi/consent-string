@@ -1,5 +1,6 @@
-import { GVL, PurposeRestrictionVector, Segment, TCModel, TCString } from '@iabtechlabtcf/core';
+import { GVL, PurposeRestriction, RestrictionType, Segment, TCModel, TCString } from '@iabtechlabtcf/core';
 import { Timestamp } from "@/types/timestamp.type";
+import { IABTCFPublisherRestriction, IABTCFPublisherRestrictionType, IABTCFPublisherRestrictionVendorsType } from '@/types/publisher-restrictions.type';
 
 export interface UserStatusIABTCF {
   /**
@@ -72,7 +73,7 @@ export interface UserStatusIABTCF {
     /**
      * Publisher restrictions
      */
-    restrictions?: PurposeRestrictionVector;
+    restrictions?: IABTCFPublisherRestriction[];
 
     /**
      * Publisher ISO 3166-1 alpha-2 country code
@@ -134,7 +135,48 @@ export function encodeIABTCF(gvl: GVL, userStatus: UserStatusIABTCF): string {
   // Publisher-specific fields in the core segment
   tcModel.publisherCountryCode = userStatus.publisher.countryCode;
 
-  // TODO: Publisher restrictions
+  // Publisher restrictions
+  userStatus.publisher.restrictions?.forEach(restriction => {
+    const purposeRestriction = new PurposeRestriction();
+
+    purposeRestriction.purposeId = restriction.purposeId;
+
+    if (restriction.restrictionType === IABTCFPublisherRestrictionType.ALLOW) {
+      // "ALLOW" does not exist in the TCF that only supports "DISALLOW" so we make it work by disallowing vendors that are not allowed
+      purposeRestriction.restrictionType = RestrictionType.NOT_ALLOWED;
+
+      if (restriction.vendors.type === IABTCFPublisherRestrictionVendorsType.LIST) {
+        // Add a purpose restriction for each vendor that is in the GVL but not in the list of allowed vendors
+        Object.keys(gvl.vendors).forEach(vendorId => {
+          if (!restriction.vendors.ids?.includes(parseInt(vendorId))) {
+            tcModel.publisherRestrictions.add(parseInt(vendorId), purposeRestriction);
+          }
+        });
+      }
+    } else {
+      switch (restriction.restrictionType) {
+        case IABTCFPublisherRestrictionType.DISALLOW:
+          purposeRestriction.restrictionType = RestrictionType.NOT_ALLOWED;
+          break;
+
+        case IABTCFPublisherRestrictionType.REQ_CONSENT:
+          purposeRestriction.restrictionType = RestrictionType.REQUIRE_CONSENT;
+          break;
+
+        case IABTCFPublisherRestrictionType.REQ_LI:
+          purposeRestriction.restrictionType = RestrictionType.REQUIRE_LI;
+          break;
+      }
+
+      if (restriction.vendors.type === IABTCFPublisherRestrictionVendorsType.LIST) {
+        // Add a purpose restriction for each vendor in the list
+        restriction.vendors.ids?.forEach(id => tcModel.publisherRestrictions.add(id, purposeRestriction));
+      } else if (restriction.vendors.type === IABTCFPublisherRestrictionVendorsType.ALL) {
+        // Add a purpose restriction for all vendors
+        tcModel.publisherRestrictions.restrictPurposeToLegalBasis(purposeRestriction);
+      }
+    }
+  });
 
   // Publisher TC segment
   if (
