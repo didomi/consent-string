@@ -4,35 +4,38 @@ import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import terser from '@rollup/plugin-terser';
 
-export default {
+// Create two separate configs for CJS and ESM
+const createConfig = (format, dir) => ({
   input: 'src/index.ts',
-  output: [
-    {
-      dir: 'dist/cjs',
-      format: 'cjs',
-      sourcemap: true,
-      preserveModules: true,
-      preserveModulesRoot: 'src',
-      exports: 'named',
-    },
-    {
-      dir: 'dist/esm',
-      format: 'esm',
-      sourcemap: true,
-      preserveModules: true,
-      preserveModulesRoot: 'src',
-    },
-  ],
+  output: {
+    dir,
+    format,
+    sourcemap: true,
+    preserveModules: true,
+    preserveModulesRoot: 'src',
+    ...(format === 'cjs' && { exports: 'named', entryFileNames: '[name].cjs' }),
+  },
   plugins: [
-    resolve(), // Resolve Node.js modules
+    resolve({
+      preferBuiltins: true,
+    }),
     commonjs({
-      // Ensure proper handling of CommonJS modules
       include: 'node_modules/**',
     }),
     json(),
     typescript({
       tsconfig: './tsconfig.json',
+      declaration: true,
+      declarationDir: dir,
+      rootDir: './src',
+      outDir: dir,
     }),
     terser(),
   ],
-};
+  external: ['@iabtechlabtcf/core'],
+});
+
+export default [
+  createConfig('cjs', 'dist/cjs'),
+  createConfig('esm', 'dist/esm'),
+];

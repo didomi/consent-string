@@ -91,7 +91,7 @@
     },
     {
       "type": "date",
-      "description": "UTC epoch time format when the Consent String was last time updated",
+      "description": "UTC epoch time format when the Consent String was last updated",
       "key": "updated"
     },
     {

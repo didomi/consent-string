@@ -1,26 +1,36 @@
 {
   "name": "@didomi/consent-string",
+  "version": "1.0.0",
   "type": "module",
-  "main": "dist/bundle.cjs.js",
-  "module": "dist/bundle.esm.js",
-  "types": "dist/index.d.ts",
+  "exports": {
+    "require": {
+      "types": "./dist/cjs/index.d.ts",
+      "default": "./dist/cjs/index.cjs"
+    },
+    "import": {
+      "types": "./dist/esm/index.d.ts",
+      "default": "./dist/esm/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "cache": "~/.npm",
+    "access": "public",
+    "@didomi:registry": "https://gitlab.com/api/v4/projects/4842110/packages/npm/",
+    "registry": "https://gitlab.com/api/v4/packages/npm/"
+  },
   "scripts": {
     "dev": "tsc --watch",
     "build:ts": "tsc",
     "build": "rollup -c",
     "check-types": "tsc --noEmit",
     "test": "vitest run --coverage",
-    "test:watch": "vitest watch"
-  },
-  "exports": {
-    ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
-    },
-    "./*": {
-      "import": "./dist/esm/*/*.js",
-      "require": "./dist/cjs/*/*.js"
-    }
+    "test:watch": "vitest watch",
+    "publish:review": "bash publish-review.sh",
+    "publish": "npm run semantic-release",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "@iabtechlabtcf/core": "1.5.13"
@@ -32,15 +42,15 @@
     "@rollup/plugin-terser": "0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@sdk/typescript-config": "*",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/gitlab": "^9.4.1",
     "@types/dlv": "1.1.4",
     "@vitest/coverage-v8": "^2.0.5",
     "alias-hq": "6.2.4",
     "rollup": "4.22.0",
+    "semantic-release": "^19.0.5",
     "typescript": "^5.6.2",
     "vitest": "^2.0.5"
-  },
-  "optionalDependencies": {
-    "@rollup/rollup-darwin-x64": "4.22.0",
-    "@rollup/rollup-linux-x64-gnu": "4.22.0"
   }
 }

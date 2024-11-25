@@ -4,8 +4,8 @@ import type { Timestamp } from './types/timestamp.type';
 import { encode, SchemaOverrides } from '@/encoder';
 import { Schema } from '@/types/schema.type';
 
-import dcsV1Schema from '@/dcs-v1.json';
-import dcsV2Schema from '@/dcs-v2.json';
+import dcsV1Schema from './dcs-v1.json';
+import dcsV2Schema from './dcs-v2.json';
 
 /**
  * Map of DCS versions to their schemas
