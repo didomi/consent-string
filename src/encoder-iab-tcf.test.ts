@@ -4,19 +4,18 @@ import gvlJson from './gvl.json';
 import { IABTCFPublisherRestrictionVendorsType } from '@/types/publisher-restrictions.type';
 import { IABTCFPublisherRestrictionType } from '@/types/publisher-restrictions.type';
 
-const gvl = new GVL(gvlJson as unknown as VersionOrVendorList);
-const allGVLVendorIds = Array.from({ length: Math.max(...gvl.vendorIds) }, (_, i) => i + 1); // All GVL vendor IDs with gaps filled (ie missing vendor IDs are included)
+const gvlEN = new GVL(gvlJson as unknown as VersionOrVendorList, { language: 'EN' });
+const gvlFR = new GVL(gvlJson as unknown as VersionOrVendorList, { language: 'FR' });
+const allGVLVendorIds = Array.from({ length: Math.max(...gvlEN.vendorIds) }, (_, i) => i + 1); // All GVL vendor IDs with gaps filled (ie missing vendor IDs are included)
 
 describe('encodeIABTCF', () => {
   it('should encode empty user status to IAB TCF consent string', () => {
-    const consentString = encodeIABTCF(gvl, {
+    const consentString = encodeIABTCF(gvlEN, {
       created: '2024-01-01',
       updated: '2024-01-01',
       cmpId: 7,
       cmpVersion: 1,
       consentScreen: 1,
-      consentLanguage: 'en',
-      policyVersion: 5,
       useNonStandardTexts: false,
       specialFeatureOptins: [],
       purposeOneTreatment: false,
@@ -43,8 +42,6 @@ describe('encodeIABTCF', () => {
       cmpId: 7,
       cmpVersion: 1,
       consentScreen: 1,
-      consentLanguage: 'EN',
-      policyVersion: 5,
       useNonStandardTexts: false,
       specialFeatureOptins: [1],
       purposeOneTreatment: false,
@@ -69,7 +66,7 @@ describe('encodeIABTCF', () => {
       }
     };
 
-    const consentString = encodeIABTCF(gvl, userStatus);
+    const consentString = encodeIABTCF(gvlEN, userStatus);
 
     const tcModel = TCString.decode(consentString);
 
@@ -78,8 +75,7 @@ describe('encodeIABTCF', () => {
     expect(tcModel.cmpId).toEqual(userStatus.cmpId);
     expect(tcModel.cmpVersion).toEqual(userStatus.cmpVersion);
     expect(tcModel.consentScreen).toEqual(userStatus.consentScreen);
-    expect(tcModel.consentLanguage).toEqual(userStatus.consentLanguage);
-    expect(tcModel.policyVersion).toEqual(userStatus.policyVersion);
+    expect(tcModel.consentLanguage).toEqual('EN');
     expect(tcModel.useNonStandardTexts).toEqual(userStatus.useNonStandardTexts);
     expect(tcModel.purposeOneTreatment).toEqual(userStatus.purposeOneTreatment);
     expect(Array.from(tcModel.specialFeatureOptins.values())).toEqual(userStatus.specialFeatureOptins);
@@ -95,16 +91,52 @@ describe('encodeIABTCF', () => {
     expect(Array.from(tcModel.publisherCustomLegitimateInterests.values())).toEqual(userStatus.publisher.customPurposes?.optout);
   });
 
+  it('should encode with language from the GVL', () => {
+    const userStatus = {
+      created: '2024-01-01T00:00:00.000Z',
+      updated: '2024-01-01T00:00:00.000Z',
+      cmpId: 7,
+      cmpVersion: 1,
+      consentScreen: 1,
+      useNonStandardTexts: false,
+      specialFeatureOptins: [1],
+      purposeOneTreatment: false,
+      purposes: {
+        optin: [1, 2, 3],
+        optout: [2],
+      },
+      vendors: {
+        optin: [1, 2],
+        optout: [8],
+      },
+      publisher: {
+        countryCode: 'FR',
+        tcfPurposes: {
+          optin: [1, 2, 3],
+          optout: [2],
+        },
+        customPurposes: {
+          optin: [4, 5],
+          optout: [5],
+        },
+      }
+    };
+
+    const consentString = encodeIABTCF(gvlFR, userStatus);
+
+    const tcModel = TCString.decode(consentString);
+
+    expect(tcModel.consentLanguage).toEqual('FR');
+  });
+
   describe('publisher restrictions', () => {
     it('should encode publisher restrictions for disallowing all vendors', () => {
-      const consentString = encodeIABTCF(gvl, {
+      const consentString = encodeIABTCF(gvlEN, {
         created: '2024-01-01',
         updated: '2024-01-01',
         cmpId: 7,
         cmpVersion: 1,
         consentScreen: 1,
-        consentLanguage: 'en',
-        policyVersion: 5,
         useNonStandardTexts: false,
         specialFeatureOptins: [],
         purposeOneTreatment: false,
@@ -150,14 +182,12 @@ describe('encodeIABTCF', () => {
     });
 
     it('should encode publisher restrictions for disallowing specific vendors', () => {
-      const consentString = encodeIABTCF(gvl, {
+      const consentString = encodeIABTCF(gvlEN, {
         created: '2024-01-01',
         updated: '2024-01-01',
         cmpId: 7,
         cmpVersion: 1,
         consentScreen: 1,
-        consentLanguage: 'en',
-        policyVersion: 5,
         useNonStandardTexts: false,
         specialFeatureOptins: [],
         purposeOneTreatment: false,
@@ -206,14 +236,12 @@ describe('encodeIABTCF', () => {
     });
 
     it('should encode publisher restrictions for requiring consent for all vendors', () => {
-      const consentString = encodeIABTCF(gvl, {
+      const consentString = encodeIABTCF(gvlEN, {
         created: '2024-01-01',
         updated: '2024-01-01',
         cmpId: 7,
         cmpVersion: 1,
         consentScreen: 1,
-        consentLanguage: 'en',
-        policyVersion: 5,
         useNonStandardTexts: false,
         specialFeatureOptins: [],
         purposeOneTreatment: false,
@@ -259,14 +287,12 @@ describe('encodeIABTCF', () => {
     });
 
     it('should encode publisher restrictions for requiring consent for specific vendors', () => {
-      const consentString = encodeIABTCF(gvl, {
+      const consentString = encodeIABTCF(gvlEN, {
         created: '2024-01-01',
         updated: '2024-01-01',
         cmpId: 7,
         cmpVersion: 1,
         consentScreen: 1,
-        consentLanguage: 'en',
-        policyVersion: 5,
         useNonStandardTexts: false,
         specialFeatureOptins: [],
         purposeOneTreatment: false,
@@ -315,14 +341,12 @@ describe('encodeIABTCF', () => {
     });
 
     it('should encode publisher restrictions for requiring legitimate interests for all vendors', () => {
-      const consentString = encodeIABTCF(gvl, {
+      const consentString = encodeIABTCF(gvlEN, {
         created: '2024-01-01',
         updated: '2024-01-01',
         cmpId: 7,
         cmpVersion: 1,
         consentScreen: 1,
-        consentLanguage: 'en',
-        policyVersion: 5,
         useNonStandardTexts: false,
         specialFeatureOptins: [],
         purposeOneTreatment: false,
@@ -368,14 +392,12 @@ describe('encodeIABTCF', () => {
     });
 
     it('should encode publisher restrictions for requiring legitimate interests for specific vendors', () => {
-      const consentString = encodeIABTCF(gvl, {
+      const consentString = encodeIABTCF(gvlEN, {
         created: '2024-01-01',
         updated: '2024-01-01',
         cmpId: 7,
         cmpVersion: 1,
         consentScreen: 1,
-        consentLanguage: 'en',
-        policyVersion: 5,
         useNonStandardTexts: false,
         specialFeatureOptins: [],
         purposeOneTreatment: false,
@@ -424,14 +446,12 @@ describe('encodeIABTCF', () => {
     });
 
     it('should encode publisher restrictions for allowing only specific vendors', () => {
-      const consentString = encodeIABTCF(gvl, {
+      const consentString = encodeIABTCF(gvlEN, {
         created: '2024-01-01',
         updated: '2024-01-01',
         cmpId: 7,
         cmpVersion: 1,
         consentScreen: 1,
-        consentLanguage: 'en',
-        policyVersion: 5,
         useNonStandardTexts: false,
         specialFeatureOptins: [],
         purposeOneTreatment: false,
@@ -482,14 +502,12 @@ describe('encodeIABTCF', () => {
     });
 
     it('should not add any restriction when allowing all vendors', () => {
-      const consentString = encodeIABTCF(gvl, {
+      const consentString = encodeIABTCF(gvlEN, {
         created: '2024-01-01',
         updated: '2024-01-01',
         cmpId: 7,
         cmpVersion: 1,
         consentScreen: 1,
-        consentLanguage: 'en',
-        policyVersion: 5,
         useNonStandardTexts: false,
         specialFeatureOptins: [],
         purposeOneTreatment: false,
@@ -532,14 +550,12 @@ describe('encodeIABTCF', () => {
     });
 
     it('should encode multiple restrictions for the same purpose', () => {
-      const consentString = encodeIABTCF(gvl, {
+      const consentString = encodeIABTCF(gvlEN, {
         created: '2024-01-01',
         updated: '2024-01-01',
         cmpId: 7,
         cmpVersion: 1,
         consentScreen: 1,
-        consentLanguage: 'en',
-        policyVersion: 5,
         useNonStandardTexts: false,
         specialFeatureOptins: [],
         purposeOneTreatment: false,
@@ -630,14 +646,12 @@ describe('encodeIABTCF', () => {
     });
 
     it('should encode restrictions for multiple purposes', () => {
-      const consentString = encodeIABTCF(gvl, {
+      const consentString = encodeIABTCF(gvlEN, {
         created: '2024-01-01',
         updated: '2024-01-01',
         cmpId: 7,
         cmpVersion: 1,
         consentScreen: 1,
-        consentLanguage: 'en',
-        policyVersion: 5,
         useNonStandardTexts: false,
         specialFeatureOptins: [],
         purposeOneTreatment: false,

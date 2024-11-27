@@ -2,6 +2,9 @@ import { GVL, PurposeRestriction, RestrictionType, Segment, TCModel, TCString } 
 import { Timestamp } from "@/types/timestamp.type";
 import { IABTCFPublisherRestriction, IABTCFPublisherRestrictionType, IABTCFPublisherRestrictionVendorsType } from '@/types/publisher-restrictions.type';
 
+/**
+ * User status for IAB TCF consent string
+ */
 export interface UserStatusIABTCF {
   /**
    * Creation Date
@@ -29,16 +32,6 @@ export interface UserStatusIABTCF {
   consentScreen: number;
 
   /**
-   * Consent Language
-   */
-  consentLanguage: string;
-
-  /**
-   * TCF policy version
-   */
-  policyVersion: number;
-
-  /**
    * Whether non-standard texts are used
    */
   useNonStandardTexts?: boolean;
@@ -54,7 +47,7 @@ export interface UserStatusIABTCF {
   purposeOneTreatment: boolean;
 
   /**
-   * Enabled / disabled purposes for all data processing rules
+   * Enabled purposes by data processing rule
    */
   purposes: {
     optin: number[];
@@ -62,7 +55,7 @@ export interface UserStatusIABTCF {
   };
 
   /**
-   * Enabled / disabled vendors for all data processing rules
+   * Enabled vendors by data processing rule
    */
   vendors: {
     optin: number[];
@@ -81,7 +74,7 @@ export interface UserStatusIABTCF {
     countryCode: string;
 
     /**
-     * Enabled / disabled TCF purposes for the publisher for all data processing rules
+     * Enabled TCF purposes for the publisher by data processing rule
      */
     tcfPurposes?: {
       optin: number[];
@@ -89,7 +82,7 @@ export interface UserStatusIABTCF {
     };
 
     /**
-     * Enabled / disabled custom purposes for the publisher for all data processing rules
+     * Enabled custom purposes for the publisher by data processing rule
      */
     customPurposes?: {
       optin: number[];
@@ -100,6 +93,8 @@ export interface UserStatusIABTCF {
 
 /**
  * Encode user status to IAB TCF consent string
+ *
+ * `consentLanguage` and `policyVersion` are taken from the GVL and cannot be overriden on the `TCModel`.
  *
  * @param gvl Global Vendor List
  * @param userStatus User status
@@ -116,8 +111,6 @@ export function encodeIABTCF(gvl: GVL, userStatus: UserStatusIABTCF): string {
   tcModel.cmpId = userStatus.cmpId;
   tcModel.cmpVersion = userStatus.cmpVersion;
   tcModel.consentScreen = userStatus.consentScreen;
-  tcModel.consentLanguage = userStatus.consentLanguage;
-  tcModel.policyVersion = userStatus.policyVersion;
   tcModel.useNonStandardTexts = userStatus.useNonStandardTexts ?? false;
   tcModel.purposeOneTreatment = userStatus.purposeOneTreatment;
 

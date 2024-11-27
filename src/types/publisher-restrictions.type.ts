@@ -58,11 +58,11 @@ export type IABTCFPublisherRestrictionVendors = {
 /**
  * A publisher restriction
  */
-export type IABTCFPublisherRestriction = {
+export type IABTCFPublisherRestriction<T = number> = {
   /**
    * Purpose ID the restriction applies to
    */
-  purposeId: number;
+  purposeId: T;
 
   /**
    * Vendors that the restriction applies to
