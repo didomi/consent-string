@@ -32,7 +32,7 @@ describe('encodeIABTCF', () => {
       }
     });
 
-    expect(consentString).toBe('CP3tAUAP3tAUAAHABBENBQFAAAAAAAAAAAqIAAAAAAAA');
+    expect(consentString).toBe('CP3tAUAP3tAUAAHABBENBQFgAAAAAAAAAAqIAAAAAAAA');
   });
 
   it('should encode full user status to IAB TCF consent string', () => {
@@ -127,6 +127,34 @@ describe('encodeIABTCF', () => {
     const tcModel = TCString.decode(consentString);
 
     expect(tcModel.consentLanguage).toEqual('FR');
+  });
+
+  it('set isServiceSpecific to true', () => {
+    const consentString = encodeIABTCF(gvlEN, {
+      created: '2024-01-01',
+      updated: '2024-01-01',
+      cmpId: 7,
+      cmpVersion: 1,
+      consentScreen: 1,
+      useNonStandardTexts: false,
+      specialFeatureOptins: [],
+      purposeOneTreatment: false,
+      purposes: {
+        optin: [],
+        optout: [],
+      },
+      vendors: {
+        optin: [],
+        optout: [],
+      },
+      publisher: {
+        countryCode: 'FR',
+      }
+    });
+
+    const tcModel = TCString.decode(consentString);
+
+    expect(tcModel.isServiceSpecific).toEqual(true);
   });
 
   describe('publisher restrictions', () => {
