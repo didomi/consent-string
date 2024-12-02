@@ -4,14 +4,7 @@ import { encodeEnabledDisabledIDs } from '@/fields/enabled-disabled-ids/encoder'
 import { encodeU16, encodeU6 } from '@/fields/number/encoder';
 import { encodeUUID } from '@/fields/uuid/encoder';
 import { encodeVersion } from '@/fields/version/encoder';
-import { PurposesVendors } from '@/types/purposes-vendors.type';
 import { SchemaField } from '@/types/schema.type';
-import { UUID } from '@/types/uuid.type';
-
-/**
- * Possible field values
- */
-export type FieldValue = UUID | number | Date | PurposesVendors | null;
 
 /**
  * Field encoder

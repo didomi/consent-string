@@ -1,6 +1,7 @@
 import { BitSet } from '@/common/bit-set';
 import { EncodingAlgorithm } from '@/constants/encoding-algorithm';
-import { encodeField, FieldValue } from '@/fields/encoder';
+import { FieldValue } from '@/types/field-value.type';
+import { encodeField } from '@/fields/encoder';
 import { Schema } from '@/types/schema.type';
 
 /**

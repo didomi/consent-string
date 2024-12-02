@@ -6,8 +6,6 @@
       "description": "Didomi Consent String V2",
       "encoded": "CGHWv4UYba5-dZnABdKu__D6iWHsD6iWHsAAKn2J57YEACKUqIAEUpVAAAIixwAACIsY",
       "decoded": {
-        "consent_string_type": "didomi_consent_string",
-        "specification_version": 2,
         "user_id": "1875afe1-461b-6b9f-9d66-700174abbffc",
         "created": "2023-04-12T18:10:00.000Z",
         "updated": "2023-04-12T18:10:00.000Z",

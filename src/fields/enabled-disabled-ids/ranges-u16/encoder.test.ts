@@ -19,7 +19,7 @@ describe('encodeRangesU16', () => {
       '0000000000000001' + // RangeStart (1)
 
       // Range 2 of enabled status
-      '1' + // SingleIdRange (false)
+      '1' + // SingleIdRange (true)
       '0000000000000011' + // RangeStart (3)
 
       '0000000000000010' + // NumberOfRanges (2 ranges) for disabled status

@@ -1,11 +1,9 @@
-import type { UUID } from './types/uuid.type';
-import type { PurposesVendors } from './types/purposes-vendors.type';
-import type { Timestamp } from './types/timestamp.type';
 import { encode, SchemaOverrides } from '@/encoder';
 import { Schema } from '@/types/schema.type';
 
 import dcsV1Schema from './dcs-v1.json';
 import dcsV2Schema from './dcs-v2.json';
+import { UserStatusDCS, UserStatusDCSV1, UserStatusDCSV2 } from '@/types/user-status-dcs.type';
 
 /**
  * Map of DCS versions to their schemas
@@ -15,61 +13,6 @@ const DCS_SCHEMAS = {
   2: dcsV2Schema as Schema,
 };
 
-/**
- * User Status for DCS v1
- */
-export type UserStatusDCSV1 = {
-  /**
-   * User ID
-   */
-  userId: UUID;
-
-  /**
-   * Creation Date
-   */
-  created: Timestamp;
-
-  /**
-   * Update Date
-   */
-  updated: Timestamp;
-
-  /**
-   * Enabled / disabled vendors for all data processing rules
-   */
-  vendors: {
-    optin: PurposesVendors;
-    optout: PurposesVendors;
-  };
-
-  /**
-   * Enabled / disabled purposes for all data processing rules
-   */
-  purposes: {
-    optin: PurposesVendors;
-    optout: PurposesVendors;
-  };
-
-  /**
-   * Last sync date
-   */
-  sync: Timestamp | null;
-};
-
-/**
- * User Status for DCS v2
- */
-export type UserStatusDCSV2 = UserStatusDCSV1 & {
-  /**
-   * Regulation ID that was used to collect the user status
-   */
-  regulationId: number;
-};
-
-/**
- * User Status for DCS
- */
-export type UserStatusDCS = UserStatusDCSV1 | UserStatusDCSV2;
 
 /**
  * Options for encoding a DCS
