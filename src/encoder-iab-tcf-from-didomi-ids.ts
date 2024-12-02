@@ -2,7 +2,7 @@ import { encodeIABTCF } from "@/encoder-iab-tcf";
 import { IABTCFPublisherRestriction } from "@/types/publisher-restrictions.type";
 import { Timestamp } from "@/types/timestamp.type";
 import { GVL } from "@iabtechlabtcf/core";
-import { IABTCFPurposesIDMapping, IABTCFVendorsIDMapping } from "@/types/iab-tcf-id-mapping.type";
+import { DidomiAPIID, IABTCFID, IABTCFPurposesIDMapping, IABTCFVendorsIDMapping } from "@/types/iab-tcf-id-mapping.type";
 
 /**
  * User status for IAB TCF consent string with Didomi IDs for purposes and vendors
@@ -47,23 +47,23 @@ export interface UserStatusIABTCFWithDidomiIDs {
    * Enabled purposes by data processing rule
    */
   purposes: {
-    optin: string[];
-    optout: string[];
+    optin: DidomiAPIID[];
+    optout: DidomiAPIID[];
   };
 
   /**
    * Enabled vendors by data processing rules
    */
   vendors: {
-    optin: string[];
-    optout: string[];
+    optin: DidomiAPIID[];
+    optout: DidomiAPIID[];
   };
 
   publisher: {
     /**
      * Publisher restrictions
      */
-    restrictions?: IABTCFPublisherRestriction<string>[];
+    restrictions?: IABTCFPublisherRestriction<DidomiAPIID, DidomiAPIID | IABTCFID>[];
 
     /**
      * Publisher ISO 3166-1 alpha-2 country code
@@ -75,16 +75,28 @@ export interface UserStatusIABTCFWithDidomiIDs {
 /**
  * Map an array of Didomi IDs to an array of IAB TCF IDs
  *
- * @param didomiIds - Array of Didomi IDs
+ * @param idsToMap - Array of IDs to map
  * @param idMapping - Mapping of Didomi IDs to IAB TCF IDs
  * @returns Array of IAB TCF IDs
  */
-function mapIds(didomiIds: string[], idMapping: Record<string, number>): number[] {
-  return didomiIds.reduce<number[]>((acc, id) => {
-    const mappedId = idMapping[id];
+export function mapIds(idsToMap: (DidomiAPIID | IABTCFID)[] | undefined | null, idMapping: Record<DidomiAPIID, IABTCFID>): IABTCFID[] {
+  if (!idsToMap || !Array.isArray(idsToMap) || idsToMap.length === 0) {
+    return [];
+  }
 
-    if (mappedId) {
-      acc.push(mappedId);
+  return idsToMap.reduce<IABTCFID[]>((acc, id) => {
+    if (id) {
+      if (typeof id === "string") {
+        // If the ID is a string, it's a Didomi ID so we map it to an IAB TCF ID
+        const mappedId = idMapping[id];
+
+        if (mappedId) {
+          acc.push(mappedId);
+        }
+      } else if (typeof id === "number") {
+        // If the ID is a number, it's an IAB TCF ID so we don't need to map it
+        acc.push(id);
+      }
     }
 
     return acc;
@@ -124,6 +136,10 @@ export function encodeIABTCFFromDidomiIDs(gvl: GVL, userStatus: UserStatusIABTCF
       restrictions: userStatus.publisher.restrictions?.map((restriction) => ({
         ...restriction,
         purposeId: purposesIDMapping.purposes[restriction.purposeId],
+        vendors: {
+          ...restriction.vendors,
+          ids: mapIds(restriction.vendors?.ids, vendorsIDMapping),
+        },
       })),
     },
   };

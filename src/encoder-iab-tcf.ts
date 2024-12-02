@@ -1,6 +1,7 @@
 import { GVL, PurposeRestriction, RestrictionType, Segment, TCModel, TCString } from '@iabtechlabtcf/core';
 import { Timestamp } from "@/types/timestamp.type";
 import { IABTCFPublisherRestriction, IABTCFPublisherRestrictionType, IABTCFPublisherRestrictionVendorsType } from '@/types/publisher-restrictions.type';
+import { IABTCFID } from '@/types/iab-tcf-id-mapping.type';
 
 /**
  * User status for IAB TCF consent string
@@ -39,7 +40,7 @@ export interface UserStatusIABTCF {
   /**
    * Special features opted in
    */
-  specialFeatureOptins: number[];
+  specialFeatureOptins: IABTCFID[];
 
   /**
    * Whether purpose one disclosed under consent (`false`) or not disclosed at all (`true`)
@@ -50,16 +51,16 @@ export interface UserStatusIABTCF {
    * Enabled purposes by data processing rule
    */
   purposes: {
-    optin: number[];
-    optout: number[];
+    optin: IABTCFID[];
+    optout: IABTCFID[];
   };
 
   /**
    * Enabled vendors by data processing rule
    */
   vendors: {
-    optin: number[];
-    optout: number[];
+    optin: IABTCFID[];
+    optout: IABTCFID[];
   };
 
   publisher: {
@@ -77,16 +78,16 @@ export interface UserStatusIABTCF {
      * Enabled TCF purposes for the publisher by data processing rule
      */
     tcfPurposes?: {
-      optin: number[];
-      optout: number[];
+      optin: IABTCFID[];
+      optout: IABTCFID[];
     };
 
     /**
      * Enabled custom purposes for the publisher by data processing rule
      */
     customPurposes?: {
-      optin: number[];
-      optout: number[];
+      optin: IABTCFID[];
+      optout: IABTCFID[];
     };
   };
 }

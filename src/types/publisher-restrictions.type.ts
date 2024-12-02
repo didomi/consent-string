@@ -1,3 +1,5 @@
+import { IABTCFID } from "./iab-tcf-id-mapping.type";
+
 /**
  * Restriction type
  */
@@ -43,11 +45,11 @@ export enum IABTCFPublisherRestrictionVendorsType {
 /**
  * Vendors that the restriction applies to
  */
-export type IABTCFPublisherRestrictionVendors = {
+export type IABTCFPublisherRestrictionVendors<VendorId = IABTCFID> = {
   /**
    * Vendor IDs
    */
-  ids?: number[];
+  ids?: VendorId[];
 
   /**
    * How vendors are provided
@@ -58,16 +60,16 @@ export type IABTCFPublisherRestrictionVendors = {
 /**
  * A publisher restriction
  */
-export type IABTCFPublisherRestriction<T = number> = {
+export type IABTCFPublisherRestriction<PurposeId = IABTCFID, VendorId = IABTCFID> = {
   /**
    * Purpose ID the restriction applies to
    */
-  purposeId: T;
+  purposeId: PurposeId;
 
   /**
    * Vendors that the restriction applies to
    */
-  vendors: IABTCFPublisherRestrictionVendors;
+  vendors: IABTCFPublisherRestrictionVendors<VendorId>;
 
   /**
    * Restriction type

@@ -1,10 +1,96 @@
 import { GVL, PurposeRestriction, RestrictionType, TCString, VersionOrVendorList } from '@iabtechlabtcf/core';
-import { encodeIABTCFFromDidomiIDs } from './encoder-iab-tcf-from-didomi-ids';
+import { encodeIABTCFFromDidomiIDs, mapIds } from './encoder-iab-tcf-from-didomi-ids';
 import gvlJson from './gvl.json';
 import { IABTCFPublisherRestrictionType } from '@/types/publisher-restrictions.type';
 import { IABTCFPublisherRestrictionVendorsType } from '@/types/publisher-restrictions.type';
 
 const gvl = new GVL(gvlJson as unknown as VersionOrVendorList);
+
+describe('mapIds', () => {
+  it('should map Didomi IDs to IAB TCF IDs', () => {
+    const didomiIds = ['google', 'facebook', 'criteo'];
+    const idMapping = {
+      'google': 1,
+      'facebook': 2,
+      'criteo': 8,
+    };
+
+    expect(mapIds(didomiIds, idMapping)).toEqual([1, 2, 8]);
+  });
+
+  it('should return an empty array if the input array is empty', () => {
+    const didomiIds: string[] = [];
+    const idMapping = {};
+
+    expect(mapIds(didomiIds, idMapping)).toEqual([]);
+  });
+
+  it('should return an empty array if the input array is undefined', () => {
+    const didomiIds = undefined;
+    const idMapping = {};
+
+    expect(mapIds(didomiIds as any, idMapping)).toEqual([]);
+  });
+
+  it('should return an empty array if the input array is null', () => {
+    const didomiIds = null;
+    const idMapping = {};
+
+    expect(mapIds(didomiIds as any, idMapping)).toEqual([]);
+  });
+
+  it('should return an empty array if the input array is not an array', () => {
+    const didomiIds = 'not an array';
+    const idMapping = {};
+
+    expect(mapIds(didomiIds as any, idMapping)).toEqual([]);
+  });
+
+  it('should return an empty array if the input array contains only undefined values', () => {
+    const didomiIds = [undefined, undefined, undefined];
+    const idMapping = {};
+
+    expect(mapIds(didomiIds as any, idMapping)).toEqual([]);
+  });
+
+  it('should return an empty array if the input array contains only null values', () => {
+    const didomiIds = [null, null, null];
+    const idMapping = {};
+
+    expect(mapIds(didomiIds as any, idMapping)).toEqual([]);
+  });
+
+  it('should return an empty array if the input array contains only empty strings', () => {
+    const didomiIds = ['', '', ''];
+    const idMapping = {};
+
+    expect(mapIds(didomiIds, idMapping)).toEqual([]);
+  });
+
+  it('should return numbers without mapping them', () => {
+    const didomiIds = [1, 2, 3];
+    const idMapping = {};
+
+    expect(mapIds(didomiIds, idMapping)).toEqual([1, 2, 3]);
+  });
+
+  it('should ignore undefined values', () => {
+    const didomiIds = [1, undefined, 3];
+    const idMapping = {};
+
+    expect(mapIds(didomiIds as any, idMapping)).toEqual([1, 3]);
+  });
+
+  it('should ignore strings that are not in the idMapping', () => {
+    const didomiIds = ['google', 'unknown', 'facebook'];
+    const idMapping = {
+      'google': 1,
+      'facebook': 2,
+    };
+
+    expect(mapIds(didomiIds, idMapping)).toEqual([1, 2]);
+  });
+});
 
 describe('encodeIABTCFFromDidomiIDs', () => {
   const purposesIDMapping = {
@@ -216,5 +302,119 @@ describe('encodeIABTCFFromDidomiIDs', () => {
     expect(tcModel.publisherRestrictions.getVendors(
       new PurposeRestriction(1, RestrictionType.NOT_ALLOWED),
     ).length).toBeGreaterThan(500);
+  });
+
+  it('supports vendors IDs as numbers in publisher restrictions', () => {
+    const userStatus = {
+      created: '2024-01-01T00:00:00.000Z',
+      updated: '2024-01-01T00:00:00.000Z',
+      cmpId: 7,
+      cmpVersion: 1,
+      consentScreen: 1,
+      useNonStandardTexts: false,
+      purposeOneTreatment: false,
+      purposes: {
+        optin: ['precise-geolocation', 'custom-marketing', 'custom-analytics'],
+        optout: ['custom-analytics'],
+      },
+      vendors: {
+        optin: ['test'],
+        optout: [],
+      },
+      publisher: {
+        countryCode: 'FR',
+        restrictions: [{
+          purposeId: 'marketing',
+          vendors: { ids: [9], type: IABTCFPublisherRestrictionVendorsType.LIST },
+          restrictionType: IABTCFPublisherRestrictionType.DISALLOW,
+        }],
+      }
+    };
+
+    const consentString = encodeIABTCFFromDidomiIDs(gvl, userStatus, purposesIDMapping, vendorsIDMapping);
+    const tcModel = TCString.decode(consentString);
+
+    expect(tcModel.publisherRestrictions.getRestrictions().length).toBe(1);
+    expect(tcModel.publisherRestrictions.getRestrictions()[0].purposeId).toBe(1);
+    expect(tcModel.publisherRestrictions.getRestrictions()[0].restrictionType).toEqual(RestrictionType.NOT_ALLOWED);
+    expect(tcModel.publisherRestrictions.getVendors(
+      new PurposeRestriction(1, RestrictionType.NOT_ALLOWED),
+    )).toEqual([9]);
+  });
+
+  it('supports vendor IDs as strings in publisher restrictions', () => {
+    const userStatus = {
+      created: '2024-01-01T00:00:00.000Z',
+      updated: '2024-01-01T00:00:00.000Z',
+      cmpId: 7,
+      cmpVersion: 1,
+      consentScreen: 1,
+      useNonStandardTexts: false,
+      purposeOneTreatment: false,
+      purposes: {
+        optin: ['precise-geolocation', 'custom-marketing', 'custom-analytics'],
+        optout: ['custom-analytics'],
+      },
+      vendors: {
+        optin: ['test'],
+        optout: [],
+      },
+      publisher: {
+        countryCode: 'FR',
+        restrictions: [{
+          purposeId: 'marketing',
+          vendors: { ids: ['criteo'], type: IABTCFPublisherRestrictionVendorsType.LIST },
+          restrictionType: IABTCFPublisherRestrictionType.DISALLOW,
+        }],
+      }
+    };
+
+    const consentString = encodeIABTCFFromDidomiIDs(gvl, userStatus, purposesIDMapping, vendorsIDMapping);
+    const tcModel = TCString.decode(consentString);
+
+    expect(tcModel.publisherRestrictions.getRestrictions().length).toBe(1);
+    expect(tcModel.publisherRestrictions.getRestrictions()[0].purposeId).toBe(1);
+    expect(tcModel.publisherRestrictions.getRestrictions()[0].restrictionType).toEqual(RestrictionType.NOT_ALLOWED);
+    expect(tcModel.publisherRestrictions.getVendors(
+      new PurposeRestriction(1, RestrictionType.NOT_ALLOWED),
+    )).toEqual([8]);
+  });
+
+  it('supports vendor IDs as a mix of strings and numbers in publisher restrictions', () => {
+    const userStatus = {
+      created: '2024-01-01T00:00:00.000Z',
+      updated: '2024-01-01T00:00:00.000Z',
+      cmpId: 7,
+      cmpVersion: 1,
+      consentScreen: 1,
+      useNonStandardTexts: false,
+      purposeOneTreatment: false,
+      purposes: {
+        optin: ['precise-geolocation', 'custom-marketing', 'custom-analytics'],
+        optout: ['custom-analytics'],
+      },
+      vendors: {
+        optin: ['test'],
+        optout: [],
+      },
+      publisher: {
+        countryCode: 'FR',
+        restrictions: [{
+          purposeId: 'marketing',
+          vendors: { ids: ['criteo', 9], type: IABTCFPublisherRestrictionVendorsType.LIST },
+          restrictionType: IABTCFPublisherRestrictionType.DISALLOW,
+        }],
+      }
+    };
+
+    const consentString = encodeIABTCFFromDidomiIDs(gvl, userStatus, purposesIDMapping, vendorsIDMapping);
+    const tcModel = TCString.decode(consentString);
+
+    expect(tcModel.publisherRestrictions.getRestrictions().length).toBe(1);
+    expect(tcModel.publisherRestrictions.getRestrictions()[0].purposeId).toBe(1);
+    expect(tcModel.publisherRestrictions.getRestrictions()[0].restrictionType).toEqual(RestrictionType.NOT_ALLOWED);
+    expect(tcModel.publisherRestrictions.getVendors(
+      new PurposeRestriction(1, RestrictionType.NOT_ALLOWED),
+    )).toEqual([8, 9]);
   });
 });
