@@ -1,5 +1,5 @@
-import dcsV1Schema from '@/dcs-v1.json';
-import dcsV2Schema from '@/dcs-v2.json';
+import { dcsV1Schema } from '@didomi/consent-string-schema/schemas';
+import { dcsV2Schema } from '@didomi/consent-string-schema/schemas';
 import { Schema } from '@/types/schema.type';
 import { UserStatusDCS } from '@/types/user-status-dcs.type';
 import { decode } from '@/decoder';

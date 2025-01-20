@@ -1,5 +1,5 @@
 import { encodeDCS } from '@/encoder-dcs';
-import dcsV1Schema from '@/dcs-v1.json';
+import { dcsV1Schema } from '@didomi/consent-string-schema/schemas';
 
 interface Test {
   description: string;

@@ -1,8 +1,8 @@
 import { encode, SchemaOverrides } from '@/encoder';
 import { Schema } from '@/types/schema.type';
 
-import dcsV1Schema from './dcs-v1.json';
-import dcsV2Schema from './dcs-v2.json';
+import { dcsV1Schema } from '@didomi/consent-string-schema/schemas';
+import { dcsV2Schema } from '@didomi/consent-string-schema/schemas';
 import { UserStatusDCS, UserStatusDCSV1, UserStatusDCSV2 } from '@/types/user-status-dcs.type';
 
 /**

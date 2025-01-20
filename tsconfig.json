@@ -1,6 +1,7 @@
 {
   "extends": "@sdk/typescript-config/base.json",
   "compilerOptions": {
+    "moduleResolution": "bundler",
     "sourceMap": true,
     "lib": ["DOM"],
     "rootDir": "src",

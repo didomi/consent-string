@@ -33,7 +33,8 @@
     "semantic-release": "semantic-release"
   },
   "dependencies": {
-    "@iabtechlabtcf/core": "1.5.13"
+    "@iabtechlabtcf/core": "1.5.13",
+    "@didomi/consent-string-schema": "*"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "26.0.1",

@@ -39,6 +39,7 @@ describe('encodeDCS - v1', () => {
       userId: 'd113bb93-7aa3-4684-ab31-aa9ae45470cb',
       created: new Date('2024-01-01'),
       updated: new Date('2024-01-01'),
+      regulationId: 10,
       purposes: {
         optin: {
           enabled: [1, 100],
@@ -61,17 +62,16 @@ describe('encodeDCS - v1', () => {
       },
       sync: null,
     };
+    // We need to use V2 where all encoding variants available to restrict it in the second call to `encodeDCS`.
+    const consentStringWithoutVariantRestrictions = encodeDCS(2, userStatus);
 
-    const consentStringWithoutVariantRestrictions = encodeDCS(1, userStatus);
-
-    // TODO: To replace with decoder when available (reading from specific bits is not very maintainable)
-    const encodingAlgorithmWithoutVariantRestrictions = new BitSet().fromBase64(consentStringWithoutVariantRestrictions)?.subSet(206, 2);
+    const encodingAlgorithmWithoutVariantRestrictions = new BitSet().fromBase64(consentStringWithoutVariantRestrictions)?.subSet(223, 2);
 
     // Confirm the encoding algorithm is Fibonacci (no restriction on variants yet)
-    expect(encodingAlgorithmWithoutVariantRestrictions?.toString()).toBe(ENABLED_DISABLED_IDS_ENCODING_ALGORITHMS.ranges_u16);
+    expect(encodingAlgorithmWithoutVariantRestrictions?.toString()).toBe(ENABLED_DISABLED_IDS_ENCODING_ALGORITHMS.ranges_fibonacci);
 
-    // Encode again with a restriction on the variants
-    const consentStringWithVariantRestrictions = encodeDCS(1, userStatus, {
+    // Encode again with a restriction on the variants. We use V2 schema here to apply restriction and create V1 from V2 as V1 has only `BIT_FIELD_2_BITS` encoding for `purposes_optin`.
+    const consentStringWithVariantRestrictions = encodeDCS(2, userStatus, {
       schemaOverrides: {
         fields: {
           purposes_optin: {
@@ -81,8 +81,7 @@ describe('encodeDCS - v1', () => {
       },
     });
 
-    // TODO: To replace with decoder when available (reading from specific bits is not very maintainable)
-    const encodingAlgorithmWithVariantRestrictions = new BitSet().fromBase64(consentStringWithVariantRestrictions)?.subSet(206, 2);
+    const encodingAlgorithmWithVariantRestrictions = new BitSet().fromBase64(consentStringWithVariantRestrictions)?.subSet(223, 2);
 
     // Confirm the encoding algorithm is Bit Field 2 Bits
     expect(encodingAlgorithmWithVariantRestrictions?.toString()).toBe(ENABLED_DISABLED_IDS_ENCODING_ALGORITHMS.bit_field_2_bits);

@@ -1,4 +1,4 @@
-import dcsV1Schema from '@/dcs-v1.json';
+import { dcsV1Schema } from '@didomi/consent-string-schema/schemas';
 import { decodeDCS } from '@/decoder-dcs';
 
 describe('encoderDCS - v1 tests from schema', () => {
