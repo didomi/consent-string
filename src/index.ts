@@ -8,3 +8,4 @@ export * from './types/purposes-vendors.type';
 export * from './types/timestamp.type';
 export * from './types/uuid.type';
 export * from './utils/iab-tcf-id-mapping';
+export * from './decoder-dcs';
