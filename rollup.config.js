@@ -10,10 +10,10 @@ const createConfig = (format, dir) => ({
   output: {
     dir,
     format,
-    sourcemap: true,
     preserveModules: true,
     preserveModulesRoot: 'src',
-    ...(format === 'cjs' && { exports: 'named', entryFileNames: '[name].cjs' }),
+    exports: format === 'cjs' ? 'named' : undefined,
+    sourcemap: true,
   },
   plugins: [
     resolve({
@@ -29,6 +29,7 @@ const createConfig = (format, dir) => ({
       declarationDir: dir,
       rootDir: './src',
       outDir: dir,
+      sourceMap: true,
     }),
     terser(),
   ],
