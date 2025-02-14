@@ -3,6 +3,7 @@ import { IdsStatuses } from '@/common/ids-statuses';
 import { getEncodedStatusBinaryString } from '@/common/encoded-status';
 import { encodeU16 } from '@/fields/number/encoder';
 import { ENABLED_DISABLED_IDS_ENCODING_ALGORITHMS } from '@/constants/encoding-algorithm';
+import { RangeConverters } from '@/common/range-converters';
 
 /**
  * Encode `IdsStatuses` to a `BitSet` using ranges of Fibonacci numbers
@@ -27,7 +28,9 @@ export function encodeRangesFibonacci(ids: IdsStatuses): BitSet {
   const rangesByStatus = ids.getRanges();
 
   // Set `EncodingAlgorithm`
-  bitSet.addBinaryString(ENABLED_DISABLED_IDS_ENCODING_ALGORITHMS.ranges_fibonacci);
+  bitSet.addBinaryString(
+    ENABLED_DISABLED_IDS_ENCODING_ALGORITHMS.ranges_fibonacci,
+  );
 
   // Set `EncodedStatuses`
   bitSet.addBinaryString(getEncodedStatusBinaryString(rangesByStatus));
@@ -38,7 +41,7 @@ export function encodeRangesFibonacci(ids: IdsStatuses): BitSet {
     bitSet.add(encodeU16(statusRanges.numberOfRanges));
 
     for (const range of statusRanges.ranges) {
-      const fibonacciRange = range.toFibonacciNumberIdsRange();
+      const fibonacciRange = RangeConverters.toFibonacciNumberIdsRange(range);
 
       // Set `FibonacciRangeStart` as the first ID (encoded as a Fibonacci number) in the range
       bitSet.add(fibonacciRange.startId.codeword);

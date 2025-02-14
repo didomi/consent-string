@@ -4,6 +4,7 @@ import { ENCODED_STATUSES_MAP, IdsStatuses } from '@/common/ids-statuses';
 import { IdsRanges } from '@/common/ids-ranges';
 import { FibonacciNumber } from '@/common/fibonacci-number';
 import { FibonacciNumberIdsRange } from '@/common/fibonacci-number-ids-range';
+import { RangeConverters } from '@/common/range-converters';
 
 /**
  * Decode Fibonacci ranges from BitSet for different statues
@@ -21,7 +22,10 @@ import { FibonacciNumberIdsRange } from '@/common/fibonacci-number-ids-range';
  * @param  offset - The starting position in the bit field for decoding.
  * @returns  An object containing the decoded IDs categorized by their status and the number of bits processed.
  */
-export const decodeRangesFibonacci = (encoded: BitSet, offset: number): DecoderResult<IdsStatuses> => {
+export const decodeRangesFibonacci = (
+  encoded: BitSet,
+  offset: number,
+): DecoderResult<IdsStatuses> => {
   let position = offset;
 
   const statusesRanges: Array<IdsRanges> = [];
@@ -35,7 +39,7 @@ export const decodeRangesFibonacci = (encoded: BitSet, offset: number): DecoderR
     return {
       error: `Failed to decode Fibonacci ranges: wrong value for encoded statuses: ${encodedStatusesCodeword}`,
       decodedLength: 2,
-    }
+    };
   }
 
   for (const status of encodedStatuses) {
@@ -44,17 +48,23 @@ export const decodeRangesFibonacci = (encoded: BitSet, offset: number): DecoderR
     position += 16;
 
     for (let rangeIndex = 0; rangeIndex < numberOfRanges; rangeIndex++) {
-      const fibonacciRangeStart = new FibonacciNumber().fromBitSet(encoded, position);
+      const fibonacciRangeStart = new FibonacciNumber().fromBitSet(
+        encoded,
+        position,
+      );
       position += fibonacciRangeStart.size;
 
-      const fibonacciNumberIdsInRange = new FibonacciNumber().fromBitSet(encoded, position);
+      const fibonacciNumberIdsInRange = new FibonacciNumber().fromBitSet(
+        encoded,
+        position,
+      );
       position += fibonacciNumberIdsInRange.size;
 
       const fibonacciRange = new FibonacciNumberIdsRange(
         fibonacciRangeStart,
         fibonacciNumberIdsInRange,
       );
-      idsRanges.add(fibonacciRange.toIdsRange());
+      idsRanges.add(RangeConverters.toIdsRange(fibonacciRange));
     }
     statusesRanges.push(idsRanges);
   }
@@ -62,5 +72,5 @@ export const decodeRangesFibonacci = (encoded: BitSet, offset: number): DecoderR
   return {
     value: IdsStatuses.fromRanges(statusesRanges),
     decodedLength: position - offset,
-  }
-}
+  };
+};

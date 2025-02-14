@@ -1,4 +1,5 @@
 import { IdsRange } from './ids-range';
+import { RangeConverters } from './range-converters';
 
 describe('IdsRange', () => {
   describe('constructor', () => {
@@ -19,17 +20,17 @@ describe('IdsRange', () => {
       expect(range.isSingleIdRange).toBeTruthy();
     });
   });
-  describe('toFibonacciNumberIdsRange', () => {
+  describe('conversion to FibonacciNumberIdsRange', () => {
     it('creates Fibonacci number range for single element range', () => {
       const range = new IdsRange(1, 1);
-      const fibonacciRange = range.toFibonacciNumberIdsRange();
+      const fibonacciRange = RangeConverters.toFibonacciNumberIdsRange(range);
       expect(fibonacciRange.startId.number).toEqual(1);
       expect(fibonacciRange.numberOfIds.number).toEqual(1);
       expect(fibonacciRange.endId.number).toEqual(1);
     });
     it('creates Fibonacci number range for a range', () => {
       const range = new IdsRange(10, 23);
-      const fibonacciRange = range.toFibonacciNumberIdsRange();
+      const fibonacciRange = RangeConverters.toFibonacciNumberIdsRange(range);
       expect(fibonacciRange.startId.number).toEqual(10);
       expect(fibonacciRange.numberOfIds.number).toEqual(14);
       expect(fibonacciRange.endId.number).toEqual(23);
