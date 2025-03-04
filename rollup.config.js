@@ -37,7 +37,46 @@ const createConfig = (format, dir) => ({
   external: ['@iabtechlabtcf/core'],
 });
 
+// Create a single file build for QuickJS
+const createQuickJSConfig = () => ({
+  input: 'src/index.ts',
+  output: {
+    file: 'dist/js/dcs-encoder.js',
+    format: 'iife',
+    name: 'DcsEncoder',
+    sourcemap: true,
+  },
+  plugins: [
+    resolve({
+      preferBuiltins: true,
+    }),
+    commonjs({
+      include: 'node_modules/**',
+    }),
+    json(),
+    typescript({
+      tsconfig: './tsconfig.json',
+      sourceMap: true,
+      declaration: false,
+      declarationMap: false,
+      compilerOptions: {
+        declaration: false,
+        declarationMap: false,
+      },
+    }),
+    terser({
+      format: {
+        comments: false,
+      },
+      compress: {
+        passes: 2,
+      },
+    }),
+  ],
+});
+
 export default [
   createConfig('cjs', 'dist/cjs'),
   createConfig('esm', 'dist/esm'),
+  createQuickJSConfig(),
 ];
