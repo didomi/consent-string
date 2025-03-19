@@ -9,7 +9,12 @@ describe('encodeBitField2Bits', () => {
       disabled: []
     };
     const encoded = encodeBitField2Bits(new IdsStatuses(purposesVendors.enabled, purposesVendors.disabled));
-    expect(encoded.isEmpty).toBeTruthy();
+    expect(encoded.isEmpty).toBeFalsy();
+    expect(encoded.toString()).toEqual(
+      '00' + // EncodingAlgorithm
+      '1' + // StartFromOne (true)
+      '0000000000000000' // NumberOfIDs=0
+    )
   });
 
   describe('StartFromOne=true (low IDs)', () => {

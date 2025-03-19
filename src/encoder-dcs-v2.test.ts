@@ -8,7 +8,7 @@ describe('encodeDCS - v2', () => {
       userId: 'd113bb93-7aa3-4684-ab31-aa9ae45470cb',
       created: new Date('2024-01-01'),
       updated: new Date('2024-01-01'),
-      vendors: {
+      purposes: {
         optin: {
           enabled: [],
           disabled: [],
@@ -18,7 +18,7 @@ describe('encodeDCS - v2', () => {
           disabled: [],
         },
       },
-      purposes: {
+      vendors: {
         optin: {
           enabled: [],
           disabled: [],
@@ -32,7 +32,7 @@ describe('encodeDCS - v2', () => {
       regulationId: 1,
     });
 
-    expect(consentString).toBeDefined();
+    expect(consentString).toEqual('C0RO7k3qjRoSrMaqa5FRwyz97QFAD97QFAAABEAACAABAAAgAAAA');
   });
 
   it('should encode a user status with schema overrides', () => {

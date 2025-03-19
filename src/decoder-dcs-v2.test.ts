@@ -1,6 +1,32 @@
 import { decodeDCS } from '@/decoder-dcs';
 
 describe('Decode DCS v2', () => {
+  it('should decode DCS v2 consent string for default user status', () => {
+    const consentString = 'C0RO7k3qjRoSrMaqa5FRwyz97QFAD97QFAAABEAACAABAAAgAAAA';
+    const expectedUserStatus = {
+      user_id: 'd113bb93-7aa3-4684-ab31-aa9ae45470cb',
+      created: '2024-01-01T00:00:00.000Z',
+      updated: '2024-01-01T00:00:00.000Z',
+      regulation_id: 1,
+      vendors_optin: {
+        enabled: [],
+        disabled: [],
+      },
+      purposes_optin: {
+        enabled: [],
+        disabled: [],
+      },
+      vendors_optout: {
+        enabled: [],
+        disabled: [],
+      },
+      purposes_optout: {
+        enabled: [],
+        disabled: [],
+      },
+    };
+    expect(decodeDCS(consentString)).toEqual(expectedUserStatus);
+  });
   it('should decode DCS v2 consent string', () => {
     const consentString = 'CGHWv4UYba5-dZnABdKu__D6iWHsD6iWHsAABEACKUqIAEUpVAAAIixwAACIsYAA';
     const expectedUserStatus = {

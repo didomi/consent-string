@@ -16,10 +16,6 @@ import { encodeU16 } from '@/fields/number/encoder';
 export function encodeBitField2Bits(ids: IdsStatuses): BitSet {
   const bitSet = new BitSet();
 
-  if (ids.isEmpty) {
-    return bitSet;
-  }
-
   // Set `EncodingAlgorithm`
   bitSet.addBinaryString(ENABLED_DISABLED_IDS_ENCODING_ALGORITHMS.bit_field_2_bits);
 

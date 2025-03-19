@@ -10,9 +10,10 @@ const createConfig = (format, dir) => ({
   output: {
     dir,
     format,
-    preserveModules: true,
+    preserveModules: format !== 'cjs',
     preserveModulesRoot: 'src',
     exports: format === 'cjs' ? 'named' : undefined,
+    entryFileNames: format === 'cjs' ? '[name].cjs' : '[name].js',
     sourcemap: true,
   },
   plugins: [

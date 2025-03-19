@@ -149,4 +149,22 @@ describe('decodeBitField2Bits', () => {
       decodedLength: 43
     });
   });
+  it('should correctly decode empty statuses', () => {
+    const purposesVendors: PurposesVendors = {
+      enabled: [],
+      disabled: []
+    };
+    expect(decodeBitField2Bits(
+      new BitSet().fromBinaryString(
+        '0000' + // Some padding to skip with offset
+        '0' + // StartFromOne (true)
+        '0000000000000001' + // StartID=1
+        '0000000000000000' // NumberOfIDs=0
+      ),
+      4
+    )).toEqual({
+      value: new IdsStatuses(purposesVendors.enabled, purposesVendors.disabled),
+      decodedLength: 33
+    });
+  })
 });

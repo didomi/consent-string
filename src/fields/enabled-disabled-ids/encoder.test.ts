@@ -47,7 +47,12 @@ describe('encodeEnabledDisabledIDs', () => {
     const result = encodeEnabledDisabledIDs(purposesVendors, mockField);
     expect(result).toBeInstanceOf(BitSet);
     expect(result).toEqual(encodeBitField2Bits(new IdsStatuses(purposesVendors.enabled, purposesVendors.disabled)));
-    expect(result.isEmpty).toBeTruthy();
+    expect(result.isEmpty).toBeFalsy();
+    expect(result.toString()).toEqual(
+      '00' + // EncodingAlgorithm
+      '1' + // StartFromOne (true)
+      '0000000000000000' // NumberOfIDs=0
+    )
   });
 
   it('encodes values with enabled IDs', () => {
