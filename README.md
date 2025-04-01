@@ -3,7 +3,7 @@
 Consent strings store user consent status as binary data, encoded in base64.
 Encoding user consent status into a binary string, or decoding it from an existing one, requires an encoder/decoder library.
 
-The library supports number of consent string formats defined in `@didomi/consent-string-schema` library. 
+The library supports number of consent string formats defined in `@didomi/consent-string-schema` library.
 
 See consent string formats description [here](../consent-string-schema/README.md)
 
@@ -15,7 +15,9 @@ The Didomi Consent String format described in the following files:
 - DCS v2 [didomi-consent-string-schema-v2.json](../consent-string-schema/src/schemas/didomi-consent-string/didomi-consent-string-schema-v2.json)
 
 ### Encoding
+
 We are using the library `encodeDCS` function to encode user status to DCS:
+
 ```typescript
 import { encodeDCS } from '@didomi/consent-string';
 
@@ -46,6 +48,7 @@ const consentString = encodeDCS(1, {
   sync: null,
 });
 ```
+
 The `encodeDCS` accepts the following parameters:
 
 - `version` - The `number` version of the DCS to use
@@ -53,6 +56,7 @@ The `encodeDCS` accepts the following parameters:
 - `options` - Options `object` for encoding the DCS
 
 where optional `options` object provides `SchemaOverrides` feature
+
 ```typescript
 /**
  * Options for encoding a DCS
@@ -62,9 +66,11 @@ export type EncodeDCSOptions = {
    * Overrides applied to the schema
    */
   schemaOverrides?: SchemaOverrides;
-}
+};
 ```
+
 Using `SchemaOverrides` we can restrict the schema to use only selected encoding algorithms, for example:
+
 ```typescript
 const userStatus = {
   userId: 'd113bb93-7aa3-4684-ab31-aa9ae45470cb',
@@ -104,10 +110,12 @@ const consentStringWithVariantRestrictions = encodeDCS(2, userStatus, {
   },
 });
 ```
-In this case `consentStringWithVariantRestrictions` should have BitField encoding used for `purposes_optin` and 
+
+In this case `consentStringWithVariantRestrictions` should have BitField encoding used for `purposes_optin` and
 produced result will be the same as for DCS v1 encoding.
 
 There is `EncodingAlgorithm` supported options
+
 ```typescript
 export enum EncodingAlgorithm {
   BIT_FIELD_2_BITS = 'bit_field_2_bits',
@@ -119,10 +127,12 @@ export enum EncodingAlgorithm {
 ### Decoding
 
 To decode DCS string we need to use `decodeDCS` function
+
 ```typescript
 import { decodeDCS } from '@didomi/consent-string';
 
-const consentString = 'BGHWv4UYba5-dZnABdKu__D6iWHsD6iWHsJ9iee2BAAilKiABFKVQAACIscAAAiLGAAA';
+const consentString =
+  'BGHWv4UYba5-dZnABdKu__D6iWHsD6iWHsJ9iee2BAAilKiABFKVQAACIscAAAiLGAAA';
 const expectedUserStatus = {
   user_id: '1875afe1-461b-6b9f-9d66-700174abbffc',
   created: '2023-04-12T18:10:00.000Z',
@@ -147,4 +157,5 @@ const expectedUserStatus = {
 };
 expect(decodeDCS(consentString)).toEqual(expectedUserStatus);
 ```
+
 The `decodeDCS` accept the `consentString` as a parameter and returns user status object.

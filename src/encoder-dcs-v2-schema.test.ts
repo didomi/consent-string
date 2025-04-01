@@ -36,8 +36,8 @@ describe('encoderDCS - v2 tests from schema', () => {
     it(test.description, () => {
       const consentString = encodeDCS(2, {
         userId: test.decoded.user_id,
-        created: new Date(test.decoded.created),
-        updated: new Date(test.decoded.updated),
+        created: test.decoded.created,
+        updated: test.decoded.updated,
         vendors: {
           optin: test.decoded.vendors_optin,
           optout: test.decoded.vendors_optout,
@@ -46,7 +46,7 @@ describe('encoderDCS - v2 tests from schema', () => {
           optin: test.decoded.purposes_optin,
           optout: test.decoded.purposes_optout,
         },
-        sync: test.decoded.sync ? new Date(test.decoded.sync) : null,
+        sync: test.decoded.sync ? test.decoded.sync : null,
         regulationId: test.decoded.regulation_id,
       });
 
