@@ -1,6 +1,5 @@
 {
   'branches': ['master', { 'name': 'BRANCH_NAME', 'prerelease': 'COMMIT_SHA' }],
-  'tagFormat': 'consent-string-${version}',
   'plugins':
     [
       '@semantic-release/commit-analyzer',
