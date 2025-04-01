@@ -19,7 +19,8 @@ describe('decodeBitField2Bits', () => {
       4
     )).toEqual({
       value: new IdsStatuses(purposesVendors.enabled, purposesVendors.disabled),
-      decodedLength: 27
+      decodedLength: 27,
+      usedEncoder: 'bitField2Bits'
     });
   });
   it('should correctly decode statuses when ids started from 1 and all ids are disabled', () => {
@@ -36,7 +37,8 @@ describe('decodeBitField2Bits', () => {
       0
     )).toEqual({
       value: new IdsStatuses(purposesVendors.enabled, purposesVendors.disabled),
-      decodedLength: 27
+      decodedLength: 27,
+      usedEncoder: 'bitField2Bits'
     });
   });
   it('should correctly decode statuses when ids started from 1 and all ids are undefined', () => {
@@ -53,7 +55,8 @@ describe('decodeBitField2Bits', () => {
       0
     )).toEqual({
       value: new IdsStatuses(purposesVendors.enabled, purposesVendors.disabled),
-      decodedLength: 27
+      decodedLength: 27,
+      usedEncoder: 'bitField2Bits'
     });
   });
   it('should correctly decode statuses when ids started from 1', () => {
@@ -70,7 +73,8 @@ describe('decodeBitField2Bits', () => {
       0
     )).toEqual({
       value: new IdsStatuses(purposesVendors.enabled, purposesVendors.disabled),
-      decodedLength: 27
+      decodedLength: 27,
+      usedEncoder: 'bitField2Bits'
     });
   });
   it('should correctly decode statuses when all ids are enabled', () => {
@@ -89,7 +93,8 @@ describe('decodeBitField2Bits', () => {
       4
     )).toEqual({
       value: new IdsStatuses(purposesVendors.enabled, purposesVendors.disabled),
-      decodedLength: 43
+      decodedLength: 43,
+      usedEncoder: 'bitField2Bits'
     });
   });
   it('should correctly decode statuses when all ids are disabled', () => {
@@ -108,7 +113,8 @@ describe('decodeBitField2Bits', () => {
       4
     )).toEqual({
       value: new IdsStatuses(purposesVendors.enabled, purposesVendors.disabled),
-      decodedLength: 43
+      decodedLength: 43,
+      usedEncoder: 'bitField2Bits'
     });
   });
   it('should correctly decode statuses when all ids are undefined', () => {
@@ -127,7 +133,8 @@ describe('decodeBitField2Bits', () => {
       4
     )).toEqual({
       value: new IdsStatuses(purposesVendors.enabled, purposesVendors.disabled),
-      decodedLength: 43
+      decodedLength: 43,
+      usedEncoder: 'bitField2Bits'
     });
   });
   it('should correctly decode statuses', () => {
@@ -146,7 +153,8 @@ describe('decodeBitField2Bits', () => {
       4
     )).toEqual({
       value: new IdsStatuses(purposesVendors.enabled, purposesVendors.disabled),
-      decodedLength: 43
+      decodedLength: 43,
+      usedEncoder: 'bitField2Bits'
     });
   });
   it('should correctly decode empty statuses', () => {
@@ -164,7 +172,8 @@ describe('decodeBitField2Bits', () => {
       4
     )).toEqual({
       value: new IdsStatuses(purposesVendors.enabled, purposesVendors.disabled),
-      decodedLength: 33
+      decodedLength: 33,
+      usedEncoder: 'bitField2Bits'
     });
   })
 });

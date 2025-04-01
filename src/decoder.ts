@@ -13,6 +13,22 @@ export interface DecoderOptions {
    * Base64 encoded string
    */
   consentString: string;
+
+  /**
+   * Log the types used to decode the string
+   */
+  logs?: Logs;
+}
+
+export interface Logs {
+  enabled: boolean;
+  entries: LogEntry[];
+}
+
+export type LogEntry = {
+  key: string;
+  offset: number;
+  usedEncoder?: string;
 }
 
 /**
@@ -26,7 +42,7 @@ export interface DecoderOptions {
  */
 export function decode({
   schema,
-  consentString }: DecoderOptions) : Record<string, FieldValue> {
+  consentString, logs }: DecoderOptions) : Record<string, FieldValue> {
   let offset = 0;
   const encoded = new BitSet().fromBase64(consentString);
 
@@ -35,11 +51,26 @@ export function decode({
   }
   const model: Record<string, FieldValue> = {};
 
+  if (logs?.enabled && !logs.entries) {
+    logs.entries = [];
+  }
+
   for (const field of schema.fields) {
     const result = decodeField(field, encoded, offset);
 
     if (result.error) {
       throw new Error(`[${offset}]:[${field.key}]:${result.error}`);
+    }
+
+    /**
+     * Log the entry if logging is enabled
+     */
+    if (logs?.enabled) {
+      logs.entries.push({
+        key: field.key,
+        offset,
+        usedEncoder: result.usedEncoder,
+      })
     }
 
     offset += result.decodedLength ?? 0;

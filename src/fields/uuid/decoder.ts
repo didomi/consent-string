@@ -12,4 +12,5 @@ import { UUID } from '@/types/uuid.type';
 export const decodeUUID= (encoded: BitSet, offset: number): DecoderResult<UUID> => ({
   value: encoded.subSet(offset, 128).toUUID(),
   decodedLength: 128,
+  usedEncoder: 'UUID',
 });

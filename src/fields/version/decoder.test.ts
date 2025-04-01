@@ -6,6 +6,7 @@ describe('decodeVersion', () => {
     expect(decodeVersion(new BitSet().fromBinaryString('000001'), 0)).toEqual({
       value: 1,
       decodedLength: 6,
+      usedEncoder: 'u6',
     });
   });
 });

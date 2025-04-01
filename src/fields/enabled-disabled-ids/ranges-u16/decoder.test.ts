@@ -31,7 +31,8 @@ describe('decodeRangesU16', () => {
       3 // offset to skip the initial padding
     )).toEqual({
       value: expectedValue,
-      decodedLength: 104 // 4 + 16 + 1 + 16 + 1 + 16 + 16 + 1 + 16 + 1 + 16
+      decodedLength: 104, // 4 + 16 + 1 + 16 + 1 + 16 + 16 + 1 + 16 + 1 + 16
+      usedEncoder: 'rangesU16',
     });
   });
   it('should correctly decode range numbers with only enabled IDs', () => {
@@ -52,7 +53,8 @@ describe('decodeRangesU16', () => {
       3 // offset to skip the initial padding
     )).toEqual({
       value: expectedValue,
-      decodedLength: 54 // 4 + 16 + 1 + 16 + 1 + 16
+      decodedLength: 54, // 4 + 16 + 1 + 16 + 1 + 16
+      usedEncoder: 'rangesU16',
     });
   });
   it('should correctly decode range numbers with only disabled IDs', () => {
@@ -73,7 +75,8 @@ describe('decodeRangesU16', () => {
       3 // offset to skip the initial padding
     )).toEqual({
       value: expectedValue,
-      decodedLength: 54 // 4 + 16 + 1 + 16 + 1 + 16
+      decodedLength: 54, // 4 + 16 + 1 + 16 + 1 + 16
+      usedEncoder: 'rangesU16',
     });
   });
   it('should correctly decode range numbers with enabled then undefined IDs', () => {
@@ -101,7 +104,8 @@ describe('decodeRangesU16', () => {
       3 // offset to skip the initial padding
     )).toEqual({
       value: expectedValue,
-      decodedLength: 103 // 4 + 16 + 1 + 16 + 1 + 16 + 16 + 1 + 16 + 16
+      decodedLength: 103, // 4 + 16 + 1 + 16 + 1 + 16 + 16 + 1 + 16 + 16
+      usedEncoder: 'rangesU16',
     });
   });
   it('should correctly decode range numbers with disabled then undefined IDs', () => {
@@ -129,7 +133,8 @@ describe('decodeRangesU16', () => {
       3 // offset to skip the initial padding
     )).toEqual({
       value: expectedValue,
-      decodedLength: 87 // 4 + 16 + 1 + 16 + 1 + 16 + 16 + 1 + 16
+      decodedLength: 87, // 4 + 16 + 1 + 16 + 1 + 16 + 16 + 1 + 16
+      usedEncoder: 'rangesU16',
     });
   });
   it('should correctly decode range numbers with multiple IDs in a range', () => {
@@ -155,7 +160,8 @@ describe('decodeRangesU16', () => {
       3 // offset to skip the initial padding
     )).toEqual({
       value: expectedValue,
-      decodedLength: 102 // 4 + 16 + 1 + 16 + 16 + 16 + 1 + 16 + 16
+      decodedLength: 102, // 4 + 16 + 1 + 16 + 16 + 16 + 1 + 16 + 16
+      usedEncoder: 'rangesU16',
     });
   });
   it('should correctly decode range numbers with a mix of single and multiple IDs in ranges', () => {
@@ -180,7 +186,8 @@ describe('decodeRangesU16', () => {
       3 // offset to skip the initial padding
     )).toEqual({
       value: expectedValue,
-      decodedLength: 86 // 4 + 16 + 1 + 16 + 16 + 16 + 1 + 16 + 16
+      decodedLength: 86, // 4 + 16 + 1 + 16 + 16 + 16 + 1 + 16 + 16
+      usedEncoder: 'rangesU16',
     });
   });
 });

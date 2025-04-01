@@ -62,5 +62,6 @@ export const decodeBitField2Bits = (encoded: BitSet, offset: number): DecoderRes
   return {
     value: new IdsStatuses(enabled, disabled),
     decodedLength: position - offset,
+    usedEncoder: 'bitField2Bits'
   };
 }

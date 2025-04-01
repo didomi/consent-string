@@ -6,6 +6,7 @@ import type { DecoderResult } from '@/types/decoder-result';
  *
  * @param encoded - The BitSet containing the encoded consent string.
  * @param offset - The offset in the BitSet where the date information begins.
+ * @param logging - Logging enabled
  * @returns An ISO string containing the decoded Date value, and the amount bits read from the encoded consent string.
  */
 export const decodeDate = (encoded: BitSet, offset: number): DecoderResult<string> => {
@@ -17,5 +18,6 @@ export const decodeDate = (encoded: BitSet, offset: number): DecoderResult<strin
   return {
     value: date.toISOString(),
     decodedLength: 36,
+    usedEncoder: 'date',
   };
 }

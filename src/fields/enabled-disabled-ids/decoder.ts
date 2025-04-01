@@ -49,6 +49,7 @@ export const decodeEnabledDisabledIDs = (encoded: BitSet, offset: number): Decod
     }
   }
   const result = decoder(encoded, position) as DecoderResult<IdsStatuses>;
+  const usedEncoder = result.usedEncoder ?? 'unknown';
 
   const idsStatuses = result.value;
   const decodedLength =  (result.decodedLength ?? 0) + 2;
@@ -57,6 +58,7 @@ export const decodeEnabledDisabledIDs = (encoded: BitSet, offset: number): Decod
     return {
       error: result.error,
       decodedLength,
+      usedEncoder
     }
   }
 
@@ -66,5 +68,6 @@ export const decodeEnabledDisabledIDs = (encoded: BitSet, offset: number): Decod
       disabled: idsStatuses.disabled,
     },
     decodedLength,
+    usedEncoder
   }
 }

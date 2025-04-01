@@ -159,3 +159,79 @@ expect(decodeDCS(consentString)).toEqual(expectedUserStatus);
 ```
 
 The `decodeDCS` accept the `consentString` as a parameter and returns user status object.
+
+### Decoding logs
+In some cases we need to know what encoding algorithms used to produce the DCS string. The `logs` 
+options provides the way to collect encoder information:
+
+| Log entry parameter | Type   | Description                          |
+|---------------------|--------|--------------------------------------|
+| `key`               | string | key of the user status encoded field |
+| `offset`            | number | offset in bits of the `key` in DCS   |
+| `usedEncoder`       | string | type of encoder used                 |
+
+There is example of logging:
+```typescript
+
+import { decodeDCS } from '@didomi/consent-string';
+
+const consentString = 'CGHWv4UYba5-dZnABdKu__D6iWHsD6iWHsAAKn2J57YEACKUqIAEUpVAAAIixwAACIsY';
+const expectedEntries: LogEntry[] = [
+  {
+    key: 'version',
+    offset: 0,
+    usedEncoder: 'u6',
+  },
+  {
+    key: 'user_id',
+    offset: 6,
+    usedEncoder: 'UUID',
+  },
+  {
+    key: 'created',
+    offset: 134,
+    usedEncoder: 'date',
+  },
+  {
+    key: 'updated',
+    offset: 170,
+    usedEncoder: 'date',
+  },
+  {
+    key: 'regulation_id',
+    offset: 206,
+    usedEncoder: 'u16',
+  },
+  {
+    key: 'sync',
+    offset: 222,
+    usedEncoder: 'date',
+  },
+  {
+    key: 'purposes_optin',
+    offset: 259,
+    usedEncoder: 'bitField2Bits',
+  },
+  {
+    key: 'purposes_optout',
+    offset: 294,
+    usedEncoder: 'bitField2Bits',
+  },
+  {
+    key: 'vendors_optin',
+    offset: 329,
+    usedEncoder: 'rangesFibonacci',
+  },
+  {
+    key: 'vendors_optout',
+    offset: 367,
+    usedEncoder: 'rangesFibonacci',
+  },
+];
+const entries: LogEntry[] = [];
+const logs: Logs = { enabled: true, entries };
+decodeDCS(consentString, { logs } );
+expect(entries).toEqual(expectedEntries);
+```
+
+

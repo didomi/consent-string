@@ -11,6 +11,7 @@ import type { DecoderResult } from '@/types/decoder-result';
 export const decodeU1= (encoded: BitSet, offset: number): DecoderResult<boolean> => ({
     value: encoded.get(offset),
     decodedLength: 1,
+    usedEncoder: 'u1',
 });
 
 /**
@@ -23,6 +24,7 @@ export const decodeU1= (encoded: BitSet, offset: number): DecoderResult<boolean>
 export const decodeU6= (encoded: BitSet, offset: number): DecoderResult<number> => ({
   value: parseInt(encoded.subSet(offset, 6).toString(), 2),
   decodedLength: 6,
+  usedEncoder: 'u6',
 });
 
 /**
@@ -35,4 +37,5 @@ export const decodeU6= (encoded: BitSet, offset: number): DecoderResult<number> 
 export const decodeU16= (encoded: BitSet, offset: number): DecoderResult<number> => ({
   value: parseInt(encoded.subSet(offset, 16).toString(), 2),
   decodedLength: 16,
+  usedEncoder: 'u16',
 });

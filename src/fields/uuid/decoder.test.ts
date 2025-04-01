@@ -11,6 +11,7 @@ describe('decodeUUID', () => {
     )).toEqual({
       value: '1875afe1-461b-6b9f-9d66-700174abbffc',
       decodedLength: 128,
+      usedEncoder: 'UUID',
     })
   });
 });

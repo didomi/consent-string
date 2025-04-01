@@ -90,5 +90,6 @@ export const decodeRangesU16 = (encoded: BitSet, offset: number): DecoderResult<
   return {
     value: IdsStatuses.fromRanges(statusesRanges),
     decodedLength: position - offset,
+    usedEncoder: 'rangesU16',
   }
 }

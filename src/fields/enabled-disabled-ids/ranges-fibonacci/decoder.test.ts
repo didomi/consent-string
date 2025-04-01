@@ -30,7 +30,8 @@ describe('decodeRangesFibonacci', () => {
       3 // offset to skip the initial padding
     )).toEqual({
       value: expectedValue,
-      decodedLength: 57 // 4 + 16 + 2 + 2 + 4 + 2 + 16 + 3 + 2 + 4 + 2
+      decodedLength: 57, // 4 + 16 + 2 + 2 + 4 + 2 + 16 + 3 + 2 + 4 + 2
+      usedEncoder: 'rangesFibonacci',
     });
   });
   it('should correctly decode range numbers with only enabled IDs', () => {
@@ -50,7 +51,8 @@ describe('decodeRangesFibonacci', () => {
       3 // offset to skip the initial padding
     )).toEqual({
       value: expectedValue,
-      decodedLength: 30 // 4 + 16 + 2 + 2 + 4 + 2
+      decodedLength: 30, // 4 + 16 + 2 + 2 + 4 + 2
+      usedEncoder: 'rangesFibonacci',
     });
   });
   it('should correctly decode range numbers with only disabled IDs', () => {
@@ -70,7 +72,8 @@ describe('decodeRangesFibonacci', () => {
       3 // offset to skip the initial padding
     )).toEqual({
       value: expectedValue,
-      decodedLength: 31 // 4 + 16 + 3 + 2 + 4 + 2
+      decodedLength: 31, // 4 + 16 + 3 + 2 + 4 + 2
+      usedEncoder: 'rangesFibonacci',
     });
   });
   it('should correctly decode range numbers with disabled then undefined IDs', () => {
@@ -96,7 +99,8 @@ describe('decodeRangesFibonacci', () => {
       3 // offset to skip the initial padding
     )).toEqual({
       value: expectedValue,
-      decodedLength: 53 // 4 + 16 + 2 + 2 + 5 + 2 + 16 +  4 + 2
+      decodedLength: 53, // 4 + 16 + 2 + 2 + 5 + 2 + 16 +  4 + 2
+      usedEncoder: 'rangesFibonacci',
     });
   });
   it('should correctly decode range numbers with multiple IDs in a range', () => {
@@ -118,7 +122,8 @@ describe('decodeRangesFibonacci', () => {
       3 // offset to skip the initial padding
     )).toEqual({
       value: expectedValue,
-      decodedLength: 48 // 4 + 16 + 2 + 3 + 16 + 4 + 3
+      decodedLength: 48, // 4 + 16 + 2 + 3 + 16 + 4 + 3
+      usedEncoder: 'rangesFibonacci',
     });
   });
   it('should correctly decode range numbers with a mix of single and multiple IDs in ranges', () => {
@@ -140,7 +145,8 @@ describe('decodeRangesFibonacci', () => {
       3 // offset to skip the initial padding
     )).toEqual({
       value: expectedValue,
-      decodedLength: 47 // 4 + 16 + 2 + 2 + 16 + 4 + 3
+      decodedLength: 47, // 4 + 16 + 2 + 2 + 16 + 4 + 3
+      usedEncoder: 'rangesFibonacci',
     });
   });
 });

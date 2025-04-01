@@ -12,6 +12,7 @@ describe('decode numbers', () => {
       )).toEqual({
         value: true,
         decodedLength: 1,
+        usedEncoder: 'u1',
       })
       expect(decodeU1(new BitSet().fromBinaryString(
           '0' // 0 for false
@@ -20,6 +21,7 @@ describe('decode numbers', () => {
       )).toEqual({
         value: false,
         decodedLength: 1,
+        usedEncoder: 'u1',
       })
     });
   });
@@ -33,6 +35,7 @@ describe('decode numbers', () => {
       )).toEqual({
         value: 7,
         decodedLength: 6,
+        usedEncoder: 'u6',
       })
       expect(decodeU6(new BitSet().fromBinaryString(
           '11111111111111' // 63
@@ -41,6 +44,7 @@ describe('decode numbers', () => {
       )).toEqual({
         value: 63,
         decodedLength: 6,
+        usedEncoder: 'u6',
       })
     });
   });
@@ -54,6 +58,7 @@ describe('decode numbers', () => {
       )).toEqual({
         value: 7,
         decodedLength: 16,
+        usedEncoder: 'u16',
       })
       expect(decodeU16(new BitSet().fromBinaryString(
           '1111111111111111' // 63
@@ -62,6 +67,7 @@ describe('decode numbers', () => {
       )).toEqual({
         value: 65535,
         decodedLength: 16,
+        usedEncoder: 'u16',
       })
     });
   });

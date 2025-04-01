@@ -20,7 +20,8 @@ describe('decodeEnabledDisabledIDs', () => {
       4
     )).toEqual({
       value: purposesVendors,
-      decodedLength: 45
+      decodedLength: 45,
+      usedEncoder: 'bitField2Bits',
     });
   });
   it('should correctly decode enabled disabled ids for Fibonacci ranges encoded', () => {
@@ -45,7 +46,8 @@ describe('decodeEnabledDisabledIDs', () => {
       0 // offset to skip the initial padding
     )).toEqual({
       value: purposesVendors,
-      decodedLength: 49 // 2 + 4 + 16 + 2 + 2 + 16 + 4 + 3
+      decodedLength: 49, // 2 + 4 + 16 + 2 + 2 + 16 + 4 + 3
+      usedEncoder: 'rangesFibonacci',
     });
   });
   it('should correctly decode enabled disabled ids for U16 ranges encoded', () => {
@@ -77,7 +79,8 @@ describe('decodeEnabledDisabledIDs', () => {
       3 // offset to skip the initial padding
     )).toEqual({
       value: purposesVendors,
-      decodedLength: 89 // 2 + 4 + 16 + 1 + 16 + 1 + 16 + 16 + 1 + 16
+      decodedLength: 89, // 2 + 4 + 16 + 1 + 16 + 1 + 16 + 16 + 1 + 16
+      usedEncoder: 'rangesU16',
     });
   });
   it('should returns error for invalid algorithms codeword', () => {

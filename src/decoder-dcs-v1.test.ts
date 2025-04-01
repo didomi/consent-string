@@ -1,4 +1,5 @@
 import { decodeDCS } from '@/decoder-dcs';
+import { LogEntry, Logs } from '@/decoder';
 
 describe('Decode DCS v1', () => {
   it('should decode DCS v1 consent string', () => {
@@ -26,6 +27,60 @@ describe('Decode DCS v1', () => {
       },
     };
     expect(decodeDCS(consentString)).toEqual(expectedUserStatus);
+  });
+  it('should decode DCS v1 and provide logs', () => {
+    const consentString = 'BGHWv4UYba5-dZnABdKu__D6iWHsD6iWHsJ9iee2BAAilKiABFKVQAACIscAAAiLGAAA';
+    const expectedEntries: LogEntry[] = [
+      {
+        key: 'version',
+        offset: 0,
+        usedEncoder: 'u6',
+      },
+      {
+        key: 'user_id',
+        offset: 6,
+        usedEncoder: 'UUID',
+      },
+      {
+        key: 'created',
+        offset: 134,
+        usedEncoder: 'date',
+      },
+      {
+        key: 'updated',
+        offset: 170,
+        usedEncoder: 'date',
+      },
+      {
+        key: 'sync',
+        offset: 206,
+        usedEncoder: 'date',
+      },
+      {
+        key: 'purposes_optin',
+        offset: 243,
+        usedEncoder: 'bitField2Bits',
+      },
+      {
+        key: 'purposes_optout',
+        offset: 278,
+        usedEncoder: 'bitField2Bits',
+      },
+      {
+        key: 'vendors_optin',
+        offset: 313,
+        usedEncoder: 'rangesFibonacci',
+      },
+      {
+        key: 'vendors_optout',
+        offset: 351,
+        usedEncoder: 'rangesFibonacci',
+      },
+    ];
+    const entries: LogEntry[] = [];
+    const logs: Logs = { enabled: true, entries };
+    decodeDCS(consentString, { logs } );
+    expect(entries).toEqual(expectedEntries);
   });
   it('should decode DCS v1 long consent string', () => {
     const consentString =

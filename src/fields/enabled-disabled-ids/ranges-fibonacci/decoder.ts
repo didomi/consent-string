@@ -72,5 +72,6 @@ export const decodeRangesFibonacci = (
   return {
     value: IdsStatuses.fromRanges(statusesRanges),
     decodedLength: position - offset,
+    usedEncoder: 'rangesFibonacci',
   };
 };
