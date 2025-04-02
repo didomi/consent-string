@@ -14,7 +14,7 @@ export type SchemaOverrides = {
       variants?: EncodingAlgorithm[];
     };
   };
-}
+};
 
 /**
  * Options for encoding a consent string

@@ -27,10 +27,7 @@
     "build": "rollup -c",
     "check-types": "tsc --noEmit",
     "test": "vitest run --coverage",
-    "test:watch": "vitest watch",
-    "publish:review": "bash publish-review.sh",
-    "publish": "npm run semantic-release",
-    "semantic-release": "semantic-release"
+    "test:watch": "vitest watch"
   },
   "dependencies": {
     "@iabtechlabtcf/core": "1.5.13",
@@ -43,14 +40,10 @@
     "@rollup/plugin-terser": "0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@sdk/typescript-config": "*",
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/gitlab": "^13.2.4",
     "@types/dlv": "1.1.4",
     "@vitest/coverage-v8": "^2.0.5",
     "alias-hq": "6.2.4",
     "rollup": "4.22.0",
-    "semantic-release": "^24.2.3",
     "typescript": "^5.6.2",
     "vitest": "^2.0.5"
   }
