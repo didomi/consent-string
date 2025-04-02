@@ -1,4 +1,4 @@
-# Consent String Encoding / Decoding
+# Consent String Encoder / Decoder
 
 Consent strings store user consent status as binary data, encoded in base64.
 Encoding user consent status into a binary string, or decoding it from an existing one, requires an encoder/decoder library.
@@ -161,21 +161,23 @@ expect(decodeDCS(consentString)).toEqual(expectedUserStatus);
 The `decodeDCS` accept the `consentString` as a parameter and returns user status object.
 
 ### Decoding logs
-In some cases we need to know what encoding algorithms used to produce the DCS string. The `logs` 
+
+In some cases we need to know what encoding algorithms used to produce the DCS string. The `logs`
 options provides the way to collect encoder information:
 
 | Log entry parameter | Type   | Description                          |
-|---------------------|--------|--------------------------------------|
+| ------------------- | ------ | ------------------------------------ |
 | `key`               | string | key of the user status encoded field |
 | `offset`            | number | offset in bits of the `key` in DCS   |
 | `usedEncoder`       | string | type of encoder used                 |
 
 There is example of logging:
-```typescript
 
+```typescript
 import { decodeDCS } from '@didomi/consent-string';
 
-const consentString = 'CGHWv4UYba5-dZnABdKu__D6iWHsD6iWHsAAKn2J57YEACKUqIAEUpVAAAIixwAACIsY';
+const consentString =
+  'CGHWv4UYba5-dZnABdKu__D6iWHsD6iWHsAAKn2J57YEACKUqIAEUpVAAAIixwAACIsY';
 const expectedEntries: LogEntry[] = [
   {
     key: 'version',
@@ -230,8 +232,6 @@ const expectedEntries: LogEntry[] = [
 ];
 const entries: LogEntry[] = [];
 const logs: Logs = { enabled: true, entries };
-decodeDCS(consentString, { logs } );
+decodeDCS(consentString, { logs });
 expect(entries).toEqual(expectedEntries);
 ```
-
-
