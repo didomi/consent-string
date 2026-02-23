@@ -5,14 +5,14 @@ Encoding user consent status into a binary string, or decoding it from an existi
 
 The library supports number of consent string formats defined in `@didomi/consent-string-schema` library.
 
-See consent string formats description [here](../consent-string-schema/README.md)
+See consent string formats description [here](https://github.com/didomi/consent-string-schema)
 
 ## Didomi Consent String
 
-The Didomi Consent String format described in the following files:
+The Didomi Consent String format is described in the following files:
 
-- DCS v1 [didomi-consent-string-schema-v1.json](../consent-string-schema/src/schemas/didomi-consent-string/didomi-consent-string-schema-v1.json)
-- DCS v2 [didomi-consent-string-schema-v2.json](../consent-string-schema/src/schemas/didomi-consent-string/didomi-consent-string-schema-v2.json)
+- DCS v1 [didomi-consent-string-schema-v1.json](https://github.com/didomi/consent-string-schema/blob/main/src/schemas/didomi-consent-string/didomi-consent-string-schema-v1.json)
+- DCS v2 [didomi-consent-string-schema-v2.json](https://github.com/didomi/consent-string-schema/blob/main/src/schemas/didomi-consent-string/didomi-consent-string-schema-v2.json)
 
 ### Encoding
 
