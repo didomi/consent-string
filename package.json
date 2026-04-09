@@ -16,10 +16,8 @@
     "dist"
   ],
   "publishConfig": {
-    "cache": "~/.npm",
     "access": "public",
-    "@didomi:registry": "https://gitlab.com/api/v4/projects/4842110/packages/npm/",
-    "registry": "https://gitlab.com/api/v4/packages/npm/"
+    "@didomi:registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "dev": "tsc --watch",
@@ -30,8 +28,8 @@
     "test:watch": "vitest watch"
   },
   "dependencies": {
-    "@iabtechlabtcf/core": "1.5.13",
-    "@didomi/consent-string-schema": "*"
+    "@didomi/consent-string-schema": "1.1.0",
+    "@iabtechlabtcf/core": "1.5.13"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "26.0.1",
@@ -39,8 +37,9 @@
     "@rollup/plugin-node-resolve": "15.2.3",
     "@rollup/plugin-terser": "0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@sdk/typescript-config": "*",
     "@types/dlv": "1.1.4",
+    "@types/jest": "^30.0.0",
+    "@types/mocha": "^10.0.10",
     "@vitest/coverage-v8": "^2.0.5",
     "alias-hq": "6.2.4",
     "rollup": "4.22.0",

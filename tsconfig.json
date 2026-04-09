@@ -1,5 +1,5 @@
 {
-  "extends": "@sdk/typescript-config/base.json",
+  "extends": "./base.json",
   "compilerOptions": {
     "moduleResolution": "bundler",
     "sourceMap": true,
